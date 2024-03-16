@@ -1,0 +1,24 @@
+<mat-card>
+  <form [formGroup]="form" (ngSubmit)="Saveuser()">
+    <h1 mat-dialog-title>{{ inputdata.title }}</h1>
+    <div mat-dialog-content>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input formControlName="name" matInput />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone" />
+      </mat-form-field>
+    </div>
+    <mat-card-actions>
+      <div class="container-btn-events">
+        <button mat-raised-button color="accent" class="btn">Agregar</button>
+      </div>
+    </mat-card-actions>
+  </form>
+</mat-card>

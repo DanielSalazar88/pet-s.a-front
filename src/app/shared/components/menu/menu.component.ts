@@ -14,20 +14,29 @@ export type MenuItem = {
 export class MenuComponent {
   menuItems: MenuItem[] = [
     {
+      icon: 'home',
+      label: 'Inicio',
+      route: '',
+    },
+    {
       icon: 'pets',
       label: 'Mascotas',
+      route: 'pets/mascotas',
     },
     {
       icon: 'group',
       label: 'Clientes',
+      route: 'pets/clientes',
     },
     {
       icon: 'medication',
       label: 'Medicinas',
+      route: 'pets/medicinas',
     },
     {
       icon: 'file_copy',
       label: 'Reportes',
+      route: 'pets/reportes',
     },
   ];
 }

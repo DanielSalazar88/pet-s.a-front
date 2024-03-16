@@ -15,7 +15,7 @@ import { MatListModule } from '@angular/material/list';
     MatButtonModule,
     MatIconModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
   ],
   exports: [MenuComponent],
 })
