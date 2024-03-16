@@ -1,3 +1,4 @@
+import { DialogData } from './../../interfaces/dialog-data.interface';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -5,7 +6,9 @@ import { Cliente } from '../../interfaces/cliente.interface';
 import { ClienteService } from '../../services/cliente.service';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AgregarClienteComponent } from '../../components/agregar-cliente/agregar-cliente.component';
+import { AgregarClienteComponent } from '../../components/clientes/agregar-cliente/agregar-cliente.component';
+import { DialogSimpleComponent } from '../../../shared/components/dialog-simple/dialog-simple.component';
+import { DialogDataCliente } from '../../interfaces/dialog-data-cliente.interface';
 
 @Component({
   selector: 'app-clientes',
@@ -19,97 +22,97 @@ export class ClientesComponent implements OnInit, AfterViewInit {
 
   clientes: Cliente[] = [
     {
-      cedula: 1234567890,
-      nombre: 'Juan',
-      apellido: 'Pérez',
+      cedula: '1234567890',
+      nombres: 'Juan',
+      apellidos: 'Pérez',
       telefono: '123-456-7890',
       correo: 'juan@example.com',
       direccion: 'Calle Principal 123',
     },
     {
-      cedula: 9876543210,
-      nombre: 'María',
-      apellido: 'González',
+      cedula: '9876543210',
+      nombres: 'María',
+      apellidos: 'González',
       telefono: '987-654-3210',
       correo: 'maria@example.com',
       direccion: 'Avenida Central 456',
     },
     {
-      cedula: 4567890123,
-      nombre: 'Carlos',
-      apellido: 'Sánchez',
+      cedula: '4567890123',
+      nombres: 'Carlos',
+      apellidos: 'Sánchez',
       telefono: '456-789-0123',
       correo: 'carlos@example.com',
       direccion: 'Plaza Mayor 789',
     },
     {
-      cedula: 4567890123,
-      nombre: 'Carlos',
-      apellido: 'Sánchez',
+      cedula: '4567890123',
+      nombres: 'Carlos',
+      apellidos: 'Sánchez',
       telefono: '456-789-0123',
       correo: 'carlos@example.com',
       direccion: 'Plaza Mayor 789',
     },
     {
-      cedula: 4567890123,
-      nombre: 'Carlos',
-      apellido: 'Sánchez',
+      cedula: '4567890123',
+      nombres: 'Carlos',
+      apellidos: 'Sánchez',
       telefono: '456-789-0123',
       correo: 'carlos@example.com',
       direccion: 'Plaza Mayor 789',
     },
     {
-      cedula: 4567890123,
-      nombre: 'Carlos',
-      apellido: 'Sánchez',
+      cedula: '4567890123',
+      nombres: 'Carlos',
+      apellidos: 'Sánchez',
       telefono: '456-789-0123',
       correo: 'carlos@example.com',
       direccion: 'Plaza Mayor 789',
     },
     {
-      cedula: 4567890123,
-      nombre: 'Carlos',
-      apellido: 'Sánchez',
+      cedula: '4567890123',
+      nombres: 'Carlos',
+      apellidos: 'Sánchez',
       telefono: '456-789-0123',
       correo: 'carlos@example.com',
       direccion: 'Plaza Mayor 789',
     },
     {
-      cedula: 4567890123,
-      nombre: 'Carlos',
-      apellido: 'Sánchez',
+      cedula: '4567890123',
+      nombres: 'Carlos',
+      apellidos: 'Sánchez',
       telefono: '456-789-0123',
       correo: 'carlos@example.com',
       direccion: 'Plaza Mayor 789',
     },
     {
-      cedula: 4567890123,
-      nombre: 'Carlos',
-      apellido: 'Sánchez',
+      cedula: '4567890123',
+      nombres: 'Carlos',
+      apellidos: 'Sánchez',
       telefono: '456-789-0123',
       correo: 'carlos@example.com',
       direccion: 'Plaza Mayor 789',
     },
     {
-      cedula: 4567890123,
-      nombre: 'Carlos',
-      apellido: 'Sánchez',
+      cedula: '4567890123',
+      nombres: 'Carlos',
+      apellidos: 'Sánchez',
       telefono: '456-789-0123',
       correo: 'carlos@example.com',
       direccion: 'Plaza Mayor 789',
     },
     {
-      cedula: 4567890123,
-      nombre: 'Carlos',
-      apellido: 'Sánchez',
+      cedula: '4567890123',
+      nombres: 'Carlos',
+      apellidos: 'Sánchez',
       telefono: '456-789-0123',
       correo: 'carlos@example.com',
       direccion: 'Plaza Mayor 789',
     },
     {
-      cedula: 4567890123,
-      nombre: 'Carlos',
-      apellido: 'Sánchez',
+      cedula: '4567890123',
+      nombres: 'Carlos',
+      apellidos: 'Sánchez',
       telefono: '456-789-0123',
       correo: 'carlos@example.com',
       direccion: 'Plaza Mayor 789',
@@ -149,7 +152,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
         .toString()
         .toLowerCase()
         .includes(filters.nroDocumento);
-      const matchDescripcion = data.nombre
+      const matchDescripcion = data.nombres
         .toLowerCase()
         .includes(filters.descripcion);
       return matchNroDocumento && matchDescripcion;
@@ -170,20 +173,61 @@ export class ClientesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  agregarCliente() {
-    const code: string = 'Hola';
-    const title: string = 'Hola';
+  agregarCliente(): void {
+    const data: DialogData = {
+      title: 'Agregar Cliente',
+      edit: false,
+    };
+
     var _popup = this.dialog.open(AgregarClienteComponent, {
+      width: '60%',
+      enterAnimationDuration: '300ms',
+      exitAnimationDuration: '300ms',
+      data,
+    });
+    _popup.afterClosed().subscribe(() => {
+      this.consultarClientes();
+    });
+  }
+
+  editarCliente(clienteSeleccionado: Cliente): void {
+    const data: DialogDataCliente = {
+      title: 'Editar Cliente',
+      edit: true,
+      data: clienteSeleccionado,
+    };
+
+    var _popup = this.dialog.open(AgregarClienteComponent, {
+      width: '60%',
+      enterAnimationDuration: '300ms',
+      exitAnimationDuration: '300ms',
+      data,
+    });
+    _popup.afterClosed().subscribe(() => {
+      this.consultarClientes();
+    });
+  }
+
+  eliminarCliente(clienteSeleccionado: Cliente): void {
+    const dialog = this.dialog.open(DialogSimpleComponent, {
       width: '40%',
-      enterAnimationDuration: '100ms',
-      exitAnimationDuration: '100ms',
       data: {
-        title: title,
-        code: code,
+        title: 'Confirmación de eliminación',
+        message: `¿Está seguro de eliminar el cliente ${clienteSeleccionado.nombres} ${clienteSeleccionado.apellidos}  con Cédula: ${clienteSeleccionado.cedula}?`,
+        showCloseButton: true,
       },
     });
-    _popup.afterClosed().subscribe((item) => {
-      // console.log(item)
+
+    dialog.afterClosed().subscribe((res) => {
+      if (res) {
+        this.clienteService
+          .eliminarCliente(clienteSeleccionado.cedula)
+          .subscribe({
+            next: (response) => {},
+            error: () => {},
+          })
+          .add(() => {});
+      }
     });
   }
 

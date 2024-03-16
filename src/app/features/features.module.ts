@@ -13,11 +13,32 @@ import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { ClienteService } from './services/cliente.service';
 import { MatInputModule } from '@angular/material/input';
-import { AgregarClienteComponent } from './components/agregar-cliente/agregar-cliente.component';
+import { AgregarClienteComponent } from './components/clientes/agregar-cliente/agregar-cliente.component';
 import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from '../shared/shared.module';
+import { MascotasComponent } from './pages/mascotas/mascotas.component';
+import { MascotaService } from './services/mascota.service';
+import { AgregarMascotaComponent } from './components/mascotas/agregar-mascota/agregar-mascota.component';
+import { MedicamentoService } from './services/medicamento.service';
+import { MedicamentosComponent } from './pages/medicamentos/medicamentos.component';
+import { AgregarMedicamentoComponent } from './components/medicamentos/agregar-medicamento/agregar-medicamento.component';
+import { RecetasComponent } from './pages/recetas/recetas.component';
+import { RecetaService } from './services/receta.service';
+import { AgregarRecetaComponent } from './components/recetas/agregar-receta/agregar-receta.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
-  declarations: [HomeComponent, ClientesComponent, AgregarClienteComponent],
+  declarations: [
+    HomeComponent,
+    ClientesComponent,
+    AgregarClienteComponent,
+    MascotasComponent,
+    AgregarMascotaComponent,
+    MedicamentosComponent,
+    AgregarMedicamentoComponent,
+    RecetasComponent,
+    AgregarRecetaComponent,
+  ],
   imports: [
     CommonModule,
     FeaturesRoutingModule,
@@ -31,7 +52,14 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     MatButtonModule,
     HttpClientModule,
+    MatSelectModule,
+    SharedModule,
   ],
-  providers: [ClienteService],
+  providers: [
+    ClienteService,
+    MascotaService,
+    MedicamentoService,
+    RecetaService,
+  ],
 })
 export class FeaturesModule {}

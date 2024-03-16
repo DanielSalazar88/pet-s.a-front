@@ -6,9 +6,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogSimpleComponent } from './components/dialog-simple/dialog-simple.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
-  declarations: [MenuComponent],
+  declarations: [MenuComponent, DialogSimpleComponent],
   imports: [
     CommonModule,
     MatToolbarModule,
@@ -16,7 +19,9 @@ import { MatListModule } from '@angular/material/list';
     MatIconModule,
     MatSidenavModule,
     MatListModule,
+    MatDialogModule,
+    MatCardModule,
   ],
-  exports: [MenuComponent],
+  exports: [MenuComponent, DialogSimpleComponent],
 })
 export class SharedModule {}

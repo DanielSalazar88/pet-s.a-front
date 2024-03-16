@@ -1,16 +1,31 @@
 <div class="p-10">
   <mat-card class="rounded-lg shadow-md">
     <mat-card-header class="header-1 bg-blue-800 text-white rounded-t-lg">
-      <mat-card-title class="uppercase">Gestionar Mascotas</mat-card-title>
+      <mat-card-title class="uppercase">Gestionar Recetas</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="mt-8">
-        <mat-card-title>Filtrar Mascota</mat-card-title>
+        <mat-card-title>Filtrar Recetas</mat-card-title>
         <div class="m-4">
-          <div class="flex mt-8 space-x-4 container-form">
+          <div class="flex mt-8 space-x-3 container-form">
+            <div class="w-full">
+              <div class="w-full">
+                <mat-form-field class="w-full">
+                  <mat-label>Nombre Mascota</mat-label>
+                  <input
+                    matInput
+                    placeholder="Nombre Mascota"
+                    [(ngModel)]="filtroNombreMascota"
+                    (keyup)="aplicarFiltros()"
+                    class="w-full"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+
             <div class="w-full">
               <mat-form-field class="w-full">
-                <mat-label>Nombre Mascota</mat-label>
+                <mat-label>Nombre Medicamento</mat-label>
                 <input
                   matInput
                   placeholder="Nombre"
@@ -25,74 +40,47 @@
       </div>
       <mat-card class="mb-6 mt-7">
         <mat-card-header class="bg-blue-800 text-white rounded-t-lg">
-          <mat-card-title class="uppercase">Mascotas</mat-card-title>
+          <mat-card-title class="uppercase">Recetas</mat-card-title>
           <div class="spacer"></div>
           <button
             mat-button
             color="primary"
             class="add-client-button"
-            (click)="agregarMascota()"
+            (click)="agregarReceta()"
           >
-            Agregar Mascota <mat-icon matSuffix>add</mat-icon>
+            Agregar Medicamento <mat-icon matSuffix>add</mat-icon>
           </button>
         </mat-card-header>
 
         <div class="overflow-x-auto">
           <table
             mat-table
-            class="w-full border-collapse"
-            [dataSource]="informacionMascotas"
+            class="border-collapse"
+            [dataSource]="informacionRecetas"
+            class="text-center"
           >
             <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef class="text-center">Id</th>
-              <td mat-cell *matCellDef="let element" class="text-center">
+              <th class="text-center" mat-header-cell *matHeaderCellDef>Id</th>
+              <td class="text-center" mat-cell *matCellDef="let element">
                 {{ element.id }}
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="nombre">
+            <ng-container matColumnDef="medicamento">
               <th mat-header-cell *matHeaderCellDef class="text-center">
-                Nombre
+                Medicamentos
               </th>
               <td mat-cell *matCellDef="let element" class="text-center">
-                {{ element.nombre }}
+                {{ element.medicamento.nombre }}
               </td>
             </ng-container>
 
-            <ng-container matColumnDef="edad">
+            <ng-container matColumnDef="mascota">
               <th mat-header-cell *matHeaderCellDef class="text-center">
-                Edad
+                Mascota
               </th>
               <td mat-cell *matCellDef="let element" class="text-center">
-                {{ element.edad }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="raza">
-              <th class="text-center" mat-header-cell *matHeaderCellDef>
-                Raza
-              </th>
-              <td class="text-center" mat-cell *matCellDef="let element">
-                {{ element.raza }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="peso">
-              <th class="text-center" mat-header-cell *matHeaderCellDef>
-                Peso
-              </th>
-              <td class="text-center" mat-cell *matCellDef="let element">
-                {{ element.peso }}
-              </td>
-            </ng-container>
-
-            <ng-container matColumnDef="cliente">
-              <th class="text-center" mat-header-cell *matHeaderCellDef>
-                Cliente
-              </th>
-              <td class="text-center" mat-cell *matCellDef="let element">
-                {{ element.cedula_cliente.nombres }}
-                {{ element.cedula_cliente.apellidos }}
+                {{ element.mascota.nombre }}
               </td>
             </ng-container>
 
@@ -104,7 +92,7 @@
                 <button
                   mat-icon-button
                   color="primary"
-                  (click)="editarMascota(element)"
+                  (click)="editarReceta(element)"
                 >
                   <mat-icon matSuffix>edit</mat-icon>
                 </button>
@@ -112,7 +100,7 @@
                 <button
                   color="accent"
                   mat-icon-button
-                  (click)="eliminarMascota(element)"
+                  (click)="eliminarReceta(element)"
                 >
                   <mat-icon matSuffix>delete</mat-icon>
                 </button>

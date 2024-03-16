@@ -1,8 +1,8 @@
 export interface Cliente {
-  cedula: number;
-  nombre: string;
-  apellido: string;
+  cedula: string;
+  nombres: string;
+  apellidos: string;
+  direccion: string;
   telefono: string;
   correo: string;
-  direccion: string;
 }

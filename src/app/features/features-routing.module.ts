@@ -4,6 +4,7 @@ import { ClientesComponent } from './pages/clientes/clientes.component';
 import { MascotasComponent } from './pages/mascotas/mascotas.component';
 import { MedicamentosComponent } from './pages/medicamentos/medicamentos.component';
 import { HomeComponent } from './pages/home/home.component';
+import { RecetasComponent } from './pages/recetas/recetas.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'medicamentos',
     component: MedicamentosComponent,
+  },
+  {
+    path: 'recetas',
+    component: RecetasComponent,
   },
   {
     path: '**',

@@ -1,18 +1,18 @@
-import { Cliente } from './../interfaces/cliente.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { HttpApi } from './http-api';
 import { IRespuesta } from '../interfaces/respuesta-error.interface';
+import { Receta } from '../interfaces/receta.inteface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ClienteService {
+export class RecetaService {
   constructor(private httpClient: HttpClient) {}
 
-  consultarClientes(): Observable<Cliente[]> {
-    return this.httpClient.get<Cliente[]>(HttpApi.CONSULTAR_CLIENTES).pipe(
+  consultarRecetas(): Observable<Receta[]> {
+    return this.httpClient.get<Receta[]>(HttpApi.CONSULTAR_RECETAS).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;
@@ -20,8 +20,8 @@ export class ClienteService {
     );
   }
 
-  guardarCliente(cliente: Cliente): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.GUARDAR_CLIENTE, cliente).pipe(
+  guardarReceta(receta: Receta): Observable<any> {
+    return this.httpClient.post<any>(HttpApi.GUARDAR_RECETA, receta).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;
@@ -29,8 +29,8 @@ export class ClienteService {
     );
   }
 
-  editarCliente(cliente: Cliente): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.EDITAR_CLIENTE, cliente).pipe(
+  editarReceta(receta: Receta): Observable<any> {
+    return this.httpClient.post<any>(HttpApi.EDITAR_RECETA, receta).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;
@@ -38,8 +38,8 @@ export class ClienteService {
     );
   }
 
-  eliminarCliente(cedula: string): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.ELIMINAR_CLIENTE, cedula).pipe(
+  eliminarReceta(receta: Receta): Observable<any> {
+    return this.httpClient.post<any>(HttpApi.EDITAR_RECETA, receta).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;

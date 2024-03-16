@@ -1,18 +1,19 @@
-import { Cliente } from './../interfaces/cliente.interface';
+import { Cliente } from '../interfaces/cliente.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { HttpApi } from './http-api';
 import { IRespuesta } from '../interfaces/respuesta-error.interface';
+import { Mascota } from '../interfaces/mascota.interfa';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ClienteService {
+export class MascotaService {
   constructor(private httpClient: HttpClient) {}
 
-  consultarClientes(): Observable<Cliente[]> {
-    return this.httpClient.get<Cliente[]>(HttpApi.CONSULTAR_CLIENTES).pipe(
+  consultarMascotas(): Observable<Mascota[]> {
+    return this.httpClient.get<Mascota[]>(HttpApi.CONSULTAR_MASCOTAS).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;
@@ -20,8 +21,8 @@ export class ClienteService {
     );
   }
 
-  guardarCliente(cliente: Cliente): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.GUARDAR_CLIENTE, cliente).pipe(
+  guardarMascota(mascota: Mascota): Observable<any> {
+    return this.httpClient.post<any>(HttpApi.GUARDAR_MASCOTA, mascota).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;
@@ -29,8 +30,8 @@ export class ClienteService {
     );
   }
 
-  editarCliente(cliente: Cliente): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.EDITAR_CLIENTE, cliente).pipe(
+  editarMascota(mascota: Mascota): Observable<any> {
+    return this.httpClient.post<any>(HttpApi.EDITAR_MASCOTA, mascota).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;
@@ -38,8 +39,8 @@ export class ClienteService {
     );
   }
 
-  eliminarCliente(cedula: string): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.ELIMINAR_CLIENTE, cedula).pipe(
+  eliminarMascota(mascota: Mascota): Observable<any> {
+    return this.httpClient.post<any>(HttpApi.ELIMINAR_MASCOTA, mascota).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;

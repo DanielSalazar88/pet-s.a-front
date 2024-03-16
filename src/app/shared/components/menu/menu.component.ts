@@ -31,7 +31,12 @@ export class MenuComponent {
     {
       icon: 'medication',
       label: 'Medicinas',
-      route: 'pets/medicinas',
+      route: 'pets/medicamentos',
+    },
+    {
+      icon: 'description',
+      label: 'Recetas',
+      route: 'pets/recetas',
     },
     {
       icon: 'file_copy',

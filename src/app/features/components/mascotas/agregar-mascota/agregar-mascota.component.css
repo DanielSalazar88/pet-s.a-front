@@ -16,3 +16,9 @@ mat-card {
 button {
   margin: 2px;
 }
+
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 20px;
+}
