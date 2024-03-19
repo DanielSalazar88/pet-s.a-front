@@ -164,12 +164,15 @@ export class ClientesComponent implements OnInit, AfterViewInit {
   }
 
   consultarClientes(): void {
+    console.log('Entra');
     this.clienteService.consultarClientes().subscribe({
       next: (response) => {
         this.informacionClientes.data = response;
         this.informacionClientes.paginator = this.paginator;
       },
-      error: () => {},
+      error: (error) => {
+        console.log('ERRRPR',error);
+      },
     });
   }
 
