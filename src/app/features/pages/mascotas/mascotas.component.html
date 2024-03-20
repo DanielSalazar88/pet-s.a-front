@@ -11,13 +11,8 @@
             <div class="w-full">
               <mat-form-field class="w-full">
                 <mat-label>Nombre Mascota</mat-label>
-                <input
-                  matInput
-                  placeholder="Nombre"
-                  [(ngModel)]="filtroDescripcion"
-                  (keyup)="aplicarFiltros()"
-                  class="w-full"
-                />
+                <input matInput placeholder="Nombre" [(ngModel)]="filtroDescripcion" (keyup)="aplicarFiltros()"
+                  class="w-full" />
               </mat-form-field>
             </div>
           </div>
@@ -27,26 +22,17 @@
         <mat-card-header class="bg-blue-800 text-white rounded-t-lg">
           <mat-card-title class="uppercase">Mascotas</mat-card-title>
           <div class="spacer"></div>
-          <button
-            mat-button
-            color="primary"
-            class="add-client-button"
-            (click)="agregarMascota()"
-          >
+          <button mat-button color="primary" class="add-client-button" (click)="agregarMascota()">
             Agregar Mascota <mat-icon matSuffix>add</mat-icon>
           </button>
         </mat-card-header>
 
         <div class="overflow-x-auto">
-          <table
-            mat-table
-            class="w-full border-collapse"
-            [dataSource]="informacionMascotas"
-          >
+          <table mat-table class="w-full border-collapse" [dataSource]="informacionMascotas">
             <ng-container matColumnDef="id">
               <th mat-header-cell *matHeaderCellDef class="text-center">Id</th>
               <td mat-cell *matCellDef="let element" class="text-center">
-                {{ element.id }}
+                {{ element.id_mascota }}
               </td>
             </ng-container>
 
@@ -91,8 +77,8 @@
                 Cliente
               </th>
               <td class="text-center" mat-cell *matCellDef="let element">
-                {{ element.cedula_cliente.nombres }}
-                {{ element.cedula_cliente.apellidos }}
+                {{element.cedula_cliente.cedula}}-{{element.cedula_cliente.nombre}}
+                {{element.cedula_cliente.apellidos}}
               </td>
             </ng-container>
 
@@ -101,19 +87,11 @@
                 Acciones
               </th>
               <td class="text-center" mat-cell *matCellDef="let element">
-                <button
-                  mat-icon-button
-                  color="primary"
-                  (click)="editarMascota(element)"
-                >
+                <button mat-icon-button color="primary" (click)="editarMascota(element)">
                   <mat-icon matSuffix>edit</mat-icon>
                 </button>
 
-                <button
-                  color="accent"
-                  mat-icon-button
-                  (click)="eliminarMascota(element)"
-                >
+                <button color="accent" mat-icon-button (click)="eliminarMascota(element)">
                   <mat-icon matSuffix>delete</mat-icon>
                 </button>
               </td>
@@ -123,14 +101,8 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
         </div>
-        <mat-paginator
-          [pageSizeOptions]="[10, 15]"
-          showFirstLastButtons
-        ></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[10, 15]" showFirstLastButtons></mat-paginator>
       </mat-card>
     </mat-card-content>
-    <mat-card-actions class="mat-dialog-actions m-6">
-      <button color="accent" mat-raised-button>Generar Reporte</button>
-    </mat-card-actions>
   </mat-card>
 </div>

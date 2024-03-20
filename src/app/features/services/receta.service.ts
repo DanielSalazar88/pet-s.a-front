@@ -9,19 +9,35 @@ import { Receta } from '../interfaces/receta.inteface';
   providedIn: 'root',
 })
 export class RecetaService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   consultarRecetas(): Observable<Receta[]> {
     return this.httpClient.get<Receta[]>(HttpApi.CONSULTAR_RECETAS).pipe(
-      map((res) => {
-        this.validarMensajeError(res);
-        return res;
+      map((res: any) => {
+        const data = JSON.parse(res.Message);
+        return data.map((item: any) => ({
+          id: item.id,
+          medicamento: {
+            dosis: item.dosis,
+            nombre: item.medicamento,
+            descripcion: item.descripcion
+          },
+          mascota: {
+            nombre: item.nombre_mascota,
+            cedula_cliente: item.cedula_cliente
+          }
+        }));
       })
     );
   }
 
   guardarReceta(receta: Receta): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.GUARDAR_RECETA, receta).pipe(
+    const data = {
+      id_medicamento: Number(receta.medicamento.id),
+      id_mascota: Number(receta.mascota.id_mascota)
+    }
+    console.log(data);
+    return this.httpClient.post<any>(HttpApi.GUARDAR_RECETA, data).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;
@@ -29,17 +45,14 @@ export class RecetaService {
     );
   }
 
-  editarReceta(receta: Receta): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.EDITAR_RECETA, receta).pipe(
-      map((res) => {
-        this.validarMensajeError(res);
-        return res;
-      })
-    );
-  }
 
   eliminarReceta(receta: Receta): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.EDITAR_RECETA, receta).pipe(
+
+    const data = {
+      id_receta: receta.id
+    }
+    console.log(data);
+    return this.httpClient.post<any>(HttpApi.ELIMINAR_RECETA, data).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;

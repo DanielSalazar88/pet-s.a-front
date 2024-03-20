@@ -1,4 +1,4 @@
-import { Cliente } from '../interfaces/cliente.interface';
+import { Cliente } from './../interfaces/cliente.interface';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
@@ -10,13 +10,27 @@ import { Mascota } from '../interfaces/mascota.interfa';
   providedIn: 'root',
 })
 export class MascotaService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   consultarMascotas(): Observable<Mascota[]> {
     return this.httpClient.get<Mascota[]>(HttpApi.CONSULTAR_MASCOTAS).pipe(
-      map((res) => {
-        this.validarMensajeError(res);
-        return res;
+      map((res: any) => {
+        const data = JSON.parse(res.Message);
+        return data.map((item: any) => ({
+          id_mascota: item.id,
+          edad: item.edad,
+          peso: item.peso,
+          raza: item.raza,
+          nombre: item.nombre,
+          cedula_cliente: {
+            correo: item.correo_cliente,
+            telefono: item.telefono_cliente,
+            nombre: item.nombre_cliente,
+            cedula: item.cedula_cliente,
+            apellidos: item.apellidos_cliente,
+            direccion: item.direccion_cliente
+          }
+        }));
       })
     );
   }
@@ -31,6 +45,7 @@ export class MascotaService {
   }
 
   editarMascota(mascota: Mascota): Observable<any> {
+    console.log(mascota);
     return this.httpClient.post<any>(HttpApi.EDITAR_MASCOTA, mascota).pipe(
       map((res) => {
         this.validarMensajeError(res);
@@ -40,7 +55,10 @@ export class MascotaService {
   }
 
   eliminarMascota(mascota: Mascota): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.ELIMINAR_MASCOTA, mascota).pipe(
+    const data = {
+      id_mascota: mascota.id_mascota
+    }
+    return this.httpClient.post<any>(HttpApi.ELIMINAR_MASCOTA, data).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;

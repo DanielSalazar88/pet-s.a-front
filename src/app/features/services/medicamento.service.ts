@@ -9,13 +9,18 @@ import { Medicamento } from '../interfaces/medicamento.inteface';
   providedIn: 'root',
 })
 export class MedicamentoService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   consultarMedicamento(): Observable<Medicamento[]> {
     return this.httpClient.get<Medicamento[]>(HttpApi.CONSULTAR_MEDICAMENTO).pipe(
-      map((res) => {
-        this.validarMensajeError(res);
-        return res;
+      map((res: any) => {
+        const data = JSON.parse(res.Message);
+        return data.map((item: any) => ({
+          id: item.id,
+          dosis: item.dosis,
+          nombre: item.nombre,
+          descripcion: item.descripcion,
+        }));
       })
     );
   }
@@ -30,7 +35,15 @@ export class MedicamentoService {
   }
 
   editarMedicamento(medicamento: Medicamento): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.EDITAR_MEDICAMENTO, medicamento).pipe(
+
+    const data = {
+      id_medicamento: medicamento.id,
+      nombre: medicamento.nombre,
+      descripcion: medicamento.descripcion,
+      dosis: medicamento.dosis
+    };
+
+    return this.httpClient.post<any>(HttpApi.EDITAR_MEDICAMENTO, data).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;
@@ -39,7 +52,11 @@ export class MedicamentoService {
   }
 
   eliminarMedicamento(medicamento: Medicamento): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.EDITAR_MEDICAMENTO, medicamento).pipe(
+
+    const data = {
+      id_medicine: medicamento.id
+    }
+    return this.httpClient.post<any>(HttpApi.ELIMINAR_MEDICAMENTO, data).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;

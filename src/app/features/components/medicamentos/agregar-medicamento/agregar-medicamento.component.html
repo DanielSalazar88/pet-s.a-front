@@ -10,42 +10,31 @@
       <div mat-dialog-content class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <mat-form-field>
-            <mat-label>Id</mat-label>
-            <input formControlName="id" matInput />
-          </mat-form-field>
-        </div>
-        <div>
-          <mat-form-field>
             <mat-label>Nombre</mat-label>
             <input matInput formControlName="nombre" />
           </mat-form-field>
         </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Dosis</mat-label>
+            <input matInput formControlName="dosis" />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Descripcion</mat-label>
+            <input matInput formControlName="descripcion" />
+          </mat-form-field>
+        </div>
       </div>
       <mat-card-actions class="mat-dialog-actions">
-        <button
-          mat-raised-button
-          color="accent"
-          class="btn"
-          (click)="closepopup()"
-        >
+        <button mat-raised-button color="accent" class="btn" (click)="closepopup()">
           Cancelar
         </button>
-        <button
-          (click)="guardarMedicamento()"
-          mat-raised-button
-          color="accent"
-          class="btn"
-          *ngIf="!data.edit"
-        >
+        <button (click)="guardarMedicamento()" mat-raised-button color="accent" class="btn" *ngIf="!data.edit">
           Agregar
         </button>
-        <button
-          (click)="editarMedicamento()"
-          mat-raised-button
-          color="accent"
-          class="btn"
-          *ngIf="data.edit"
-        >
+        <button (click)="editarMedicamento()" mat-raised-button color="accent" class="btn" *ngIf="data.edit">
           Editar
         </button>
       </mat-card-actions>

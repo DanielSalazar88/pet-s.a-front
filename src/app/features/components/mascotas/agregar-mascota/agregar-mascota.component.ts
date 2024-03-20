@@ -21,7 +21,7 @@ export class AgregarMascotaComponent implements OnInit {
     private ref: MatDialogRef<AgregarMascotaComponent>,
     private fb: FormBuilder,
     private mascotaService: MascotaService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initFormBuilder();
@@ -45,7 +45,7 @@ export class AgregarMascotaComponent implements OnInit {
         this.data.edit
           ? typeof this.data.data?.cedula_cliente === 'string'
             ? this.data.data?.cedula_cliente
-            : this.data.data?.cedula_cliente.nombres
+            : this.data.data?.cedula_cliente?.cedula
           : '',
         Validators.required,
       ],
@@ -68,10 +68,12 @@ export class AgregarMascotaComponent implements OnInit {
     this.mascotaService
       .guardarMascota(mascotaNueva)
       .subscribe({
-        next: (response) => {},
-        error: () => {},
+        next: (response) => {
+          this.closepopup();
+        },
+        error: () => { },
       })
-      .add(() => {});
+      .add(() => { });
   }
 
   editarMascota() {
@@ -80,27 +82,29 @@ export class AgregarMascotaComponent implements OnInit {
       return;
     }
     const mascotaEditada: Mascota = this.obtenerDatosForm();
-    mascotaEditada.id = this.data.data?.id ?? '0';
+    mascotaEditada.id_mascota = this.data.data?.id_mascota ?? 0;
     console.log(mascotaEditada);
 
     this.mascotaService
       .editarMascota(mascotaEditada)
       .subscribe({
-        next: (response) => {},
-        error: () => {},
+        next: (response) => {
+          this.closepopup();
+        },
+        error: () => { },
       })
-      .add(() => {});
+      .add(() => { });
   }
 
   obtenerDatosForm(): Mascota {
-    const {  nombre, edad, raza, cliente, peso } = this.form.value;
+    const { nombre, edad, raza, cliente, peso } = this.form.value;
 
     const mascota: Mascota = {
       nombre,
-      edad,
+      edad: Number(edad),
       raza,
       cedula_cliente: cliente,
-      peso,
+      peso: Number(peso)
     };
 
     return mascota;

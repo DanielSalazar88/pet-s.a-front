@@ -21,7 +21,7 @@ export class AgregarMedicamentoComponent implements OnInit {
     private ref: MatDialogRef<AgregarMedicamentoComponent>,
     private fb: FormBuilder,
     private medicamentoService: MedicamentoService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initFormBuilder();
@@ -29,16 +29,17 @@ export class AgregarMedicamentoComponent implements OnInit {
 
   private initFormBuilder() {
     this.form = this.fb.group({
-      id: [
-        {
-          value: this.data.edit ? this.data.data?.id : '',
-          disabled: this.data.edit,
-        },
-        Validators.required,
-      ],
       nombre: [
         this.data.edit ? this.data.data?.nombre : '',
         [Validators.required, Validators.maxLength(15)],
+      ],
+      dosis: [
+        this.data.edit ? this.data.data?.dosis : '',
+        [Validators.required, Validators.maxLength(50)],
+      ],
+      descripcion: [
+        this.data.edit ? this.data.data?.descripcion : '',
+        [Validators.required, Validators.maxLength(100)],
       ],
     });
   }
@@ -58,10 +59,12 @@ export class AgregarMedicamentoComponent implements OnInit {
     this.medicamentoService
       .guardarMedicamento(medicamentoNuevo)
       .subscribe({
-        next: (response) => {},
-        error: () => {},
+        next: (response) => {
+          this.closepopup();
+        },
+        error: () => { },
       })
-      .add(() => {});
+      .add(() => { });
   }
 
   editarMedicamento() {
@@ -70,24 +73,27 @@ export class AgregarMedicamentoComponent implements OnInit {
       return;
     }
     const medicamentoEditado: Medicamento = this.obtenerDatosForm();
-    medicamentoEditado.id = this.data.data?.id ?? '0';
+    medicamentoEditado.id = this.data.data?.id ?? 0;
     console.log(medicamentoEditado);
 
     this.medicamentoService
       .editarMedicamento(medicamentoEditado)
       .subscribe({
-        next: (response) => {},
-        error: () => {},
+        next: (response) => {
+          this.closepopup();
+        },
+        error: () => { },
       })
-      .add(() => {});
+      .add(() => { });
   }
 
   obtenerDatosForm(): Medicamento {
-    const { id, nombre } = this.form.value;
+    const { nombre, dosis, descripcion } = this.form.value;
 
     const medicamento: Medicamento = {
-      id,
       nombre,
+      dosis,
+      descripcion
     };
 
     return medicamento;

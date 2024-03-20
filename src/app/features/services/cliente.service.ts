@@ -9,13 +9,21 @@ import { IRespuesta } from '../interfaces/respuesta-error.interface';
   providedIn: 'root',
 })
 export class ClienteService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
+
 
   consultarClientes(): Observable<Cliente[]> {
     return this.httpClient.get<Cliente[]>(HttpApi.CONSULTAR_CLIENTES).pipe(
-      map((res) => {
-        this.validarMensajeError(res);
-        return res;
+      map((res: any) => {
+        const data = JSON.parse(res.Message);
+        return data.map((item: any) => ({
+          cedula: item.cedula,
+          nombres: item.nombres,
+          apellidos: item.apellidos,
+          direccion: item.direccion,
+          telefono: item.telefono,
+          correo: item.correo
+        }));
       })
     );
   }
@@ -38,8 +46,11 @@ export class ClienteService {
     );
   }
 
-  eliminarCliente(cedula: string): Observable<any> {
-    return this.httpClient.post<any>(HttpApi.ELIMINAR_CLIENTE, cedula).pipe(
+  eliminarCliente(id: string): Observable<any> {
+    const data = {
+      cedula: id
+    }
+    return this.httpClient.post<any>(HttpApi.ELIMINAR_CLIENTE, data).pipe(
       map((res) => {
         this.validarMensajeError(res);
         return res;

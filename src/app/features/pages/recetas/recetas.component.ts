@@ -28,50 +28,7 @@ export class RecetasComponent implements OnInit {
   listMedicamentos: Medicamento[];
 
   recetas: Receta[] = [
-    {
-      id: '1',
-      medicamento: {
-        id: '1',
-        nombre: 'Paracetamol',
-      },
-      mascota: {
-        id: '1',
-        nombre: 'Luna',
-        edad: 35,
-        raza: 'Labrador Retriever',
-        cedula_cliente: {
-          cedula: '1234567890',
-          nombres: 'Juan',
-          apellidos: 'Pérez',
-          telefono: '123456789',
-          correo: 'juanperez@example.com',
-          direccion: 'Calle 123, Ciudad XYZ',
-        },
-        peso: 25,
-      },
-    },
-    {
-      id: '2',
-      medicamento: {
-        id: '2',
-        nombre: 'Ibuprofeno',
-      },
-      mascota: {
-        id: '2',
-        nombre: 'Buddy',
-        edad: 2,
-        raza: 'Golden Retriever',
-        cedula_cliente: {
-          cedula: '0987654321',
-          nombres: 'María',
-          apellidos: 'González',
-          telefono: '987654321',
-          correo: 'mariagonzalez@example.com',
-          direccion: 'Av. Principal, Ciudad ABC',
-        },
-        peso: 30,
-      },
-    },
+
     // Puedes añadir más datos de recetas aquí si lo deseas
   ];
 
@@ -88,7 +45,7 @@ export class RecetasComponent implements OnInit {
     private recetaService: RecetaService,
     private medicamentoService: MedicamentoService,
     private mascotaService: MascotaService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.consultarRecetas();
@@ -101,9 +58,11 @@ export class RecetasComponent implements OnInit {
     ): boolean => {
       const filters = JSON.parse(filter);
 
+
       const matchDescripcion = data.medicamento.nombre
         .toLowerCase()
         .includes(filters.descripcion);
+
 
       const mathNombreMascota = data.mascota.nombre
         .toLowerCase()
@@ -123,14 +82,18 @@ export class RecetasComponent implements OnInit {
         this.informacionRecetas.data = response;
         this.informacionRecetas.paginator = this.paginator;
       },
-      error: () => {},
+      error: () => {
+        this.informacionRecetas.data = [];
+      },
     });
   }
 
   agregarReceta(): void {
-    const data: DialogData = {
+    const data: DialogDataReceta = {
       title: 'Agregar Receta',
       edit: false,
+      mascotas: this.listMascotas,
+      medicamentos: this.listMedicamentos,
     };
 
     var _popup = this.dialog.open(AgregarRecetaComponent, {
@@ -144,25 +107,6 @@ export class RecetasComponent implements OnInit {
     });
   }
 
-  editarReceta(recetaSeleccionada: Receta): void {
-    const data: DialogDataReceta = {
-      title: 'Editar Medicamento',
-      edit: true,
-      data: recetaSeleccionada,
-      mascotas: this.listMascotas,
-      medicamentos: this.listMedicamentos,
-    };
-
-    var _popup = this.dialog.open(AgregarRecetaComponent, {
-      width: '60%',
-      enterAnimationDuration: '300ms',
-      exitAnimationDuration: '300ms',
-      data,
-    });
-    _popup.afterClosed().subscribe(() => {
-      this.consultarRecetas();
-    });
-  }
 
   eliminarReceta(recetaSeleccionada: Receta): void {
     const dialog = this.dialog.open(DialogSimpleComponent, {
@@ -179,10 +123,12 @@ export class RecetasComponent implements OnInit {
         this.recetaService
           .eliminarReceta(recetaSeleccionada)
           .subscribe({
-            next: (response) => {},
-            error: () => {},
+            next: (response) => {
+              this.consultarRecetas();
+            },
+            error: () => { },
           })
-          .add(() => {});
+          .add(() => { });
       }
     });
   }
@@ -192,7 +138,7 @@ export class RecetasComponent implements OnInit {
       next: (response) => {
         this.listMascotas = response;
       },
-      error: () => {},
+      error: () => { },
     });
   }
 
@@ -201,7 +147,7 @@ export class RecetasComponent implements OnInit {
       next: (response) => {
         this.listMedicamentos = response;
       },
-      error: () => {},
+      error: () => { },
     });
   }
 

@@ -11,26 +11,16 @@
             <div class="w-full">
               <mat-form-field class="w-full">
                 <mat-label>Cédula</mat-label>
-                <input
-                  matInput
-                  placeholder="Nro de documento"
-                  [(ngModel)]="filtroNroDocumento"
-                  (keyup)="aplicarFiltros()"
-                  class="w-full"
-                />
+                <input matInput placeholder="Nro de documento" [(ngModel)]="filtroNroDocumento"
+                  (keyup)="aplicarFiltros()" class="w-full" />
               </mat-form-field>
             </div>
 
             <div class="w-full">
               <mat-form-field class="w-full">
                 <mat-label>Nombre Cliente</mat-label>
-                <input
-                  matInput
-                  placeholder="Nombre"
-                  [(ngModel)]="filtroDescripcion"
-                  (keyup)="aplicarFiltros()"
-                  class="w-full"
-                />
+                <input matInput placeholder="Nombre" [(ngModel)]="filtroDescripcion" (keyup)="aplicarFiltros()"
+                  class="w-full" />
               </mat-form-field>
             </div>
           </div>
@@ -40,22 +30,13 @@
         <mat-card-header class="bg-blue-800 text-white rounded-t-lg">
           <mat-card-title class="uppercase">Clientes</mat-card-title>
           <div class="spacer"></div>
-          <button
-            mat-button
-            color="primary"
-            class="add-client-button"
-            (click)="agregarCliente()"
-          >
+          <button mat-button color="primary" class="add-client-button" (click)="agregarCliente()">
             Agregar Cliente <mat-icon matSuffix>add</mat-icon>
           </button>
         </mat-card-header>
 
         <div class="overflow-x-auto">
-          <table
-            mat-table
-            class="w-full border-collapse"
-            [dataSource]="informacionClientes"
-          >
+          <table mat-table class="w-full border-collapse" [dataSource]="informacionClientes">
             <ng-container matColumnDef="cedula">
               <th mat-header-cell *matHeaderCellDef class="text-center">
                 Cédula
@@ -115,19 +96,11 @@
                 Acciones
               </th>
               <td class="text-center" mat-cell *matCellDef="let element">
-                <button
-                  mat-icon-button
-                  color="primary"
-                  (click)="editarCliente(element)"
-                >
+                <button mat-icon-button color="primary" (click)="editarCliente(element)">
                   <mat-icon matSuffix>edit</mat-icon>
                 </button>
 
-                <button
-                  color="accent"
-                  mat-icon-button
-                  (click)="eliminarCliente(element)"
-                >
+                <button color="accent" mat-icon-button (click)="eliminarCliente(element)">
                   <mat-icon matSuffix>delete</mat-icon>
                 </button>
               </td>
@@ -137,14 +110,8 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
         </div>
-        <mat-paginator
-          [pageSizeOptions]="[10, 15]"
-          showFirstLastButtons
-        ></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[10, 15]" showFirstLastButtons></mat-paginator>
       </mat-card>
     </mat-card-content>
-    <mat-card-actions class="mat-dialog-actions m-6">
-      <button color="accent" mat-raised-button>Generar Reporte</button>
-    </mat-card-actions>
   </mat-card>
 </div>

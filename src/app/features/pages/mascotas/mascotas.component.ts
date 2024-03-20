@@ -22,147 +22,12 @@ export class MascotasComponent implements OnInit {
 
   form: FormGroup;
 
-  mascotas: Mascota[] = [
-    {
-      id: '1',
-      nombre: 'Luna',
-      edad: 3,
-      raza: 'Labrador Retriever',
-      cedula_cliente: {
-        cedula: '1234567890',
-        nombres: 'Juan',
-        apellidos: 'Pérez',
-        telefono: '123456789',
-        correo: 'juanperez@example.com',
-        direccion: 'Calle 123, Ciudad XYZ',
-      },
-      peso: 25,
-    },
-    {
-      id: '2',
-      nombre: 'Buddy',
-      edad: 2,
-      raza: 'Golden Retriever',
-      cedula_cliente: {
-        cedula: '0987654321',
-        nombres: 'María',
-        apellidos: 'González',
-        telefono: '987654321',
-        correo: 'mariagonzalez@example.com',
-        direccion: 'Av. Principal, Ciudad ABC',
-      },
-      peso: 30,
-    },
-    // Puedes añadir más datos de mascotas aquí si lo deseas
-  ];
-
-  // También puedes tener datos de clientes separados si lo necesitas
-
-  clientes: Cliente[] = [
-    {
-      cedula: '1234567890',
-      nombres: 'Juan',
-      apellidos: 'Pérez',
-      telefono: '123-456-7890',
-      correo: 'juan@example.com',
-      direccion: 'Calle Principal 123',
-    },
-    {
-      cedula: '9876543210',
-      nombres: 'María',
-      apellidos: 'González',
-      telefono: '987-654-3210',
-      correo: 'maria@example.com',
-      direccion: 'Avenida Central 456',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    // Agrega más objetos Cliente según sea necesario
-  ];
-  listadoClientes: Cliente[] = this.clientes;
+  listadoClientes: Cliente[] = [];
 
   filtroDescripcion = '';
 
   informacionMascotas: MatTableDataSource<Mascota> =
-    new MatTableDataSource<Mascota>(this.mascotas);
+    new MatTableDataSource<Mascota>();
 
   displayedColumns: string[] = [
     'id',
@@ -178,7 +43,7 @@ export class MascotasComponent implements OnInit {
     private dialog: MatDialog,
     private mascotaService: MascotaService,
     private clienteService: ClienteService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.consultarMascotas();
@@ -207,7 +72,9 @@ export class MascotasComponent implements OnInit {
         this.informacionMascotas.data = response;
         this.informacionMascotas.paginator = this.paginator;
       },
-      error: () => {},
+      error: () => {
+        this.informacionMascotas.data = [];
+      },
     });
   }
 
@@ -253,7 +120,7 @@ export class MascotasComponent implements OnInit {
       width: '40%',
       data: {
         title: 'Confirmación de eliminación',
-        message: `¿Está seguro de eliminar la mascota ${mascotaSeleccionada.nombre}  con Id: ${mascotaSeleccionada.id}?`,
+        message: `¿Está seguro de eliminar la mascota ${mascotaSeleccionada.nombre}  con Id: ${mascotaSeleccionada.id_mascota}?`,
         showCloseButton: true,
       },
     });
@@ -263,10 +130,12 @@ export class MascotasComponent implements OnInit {
         this.mascotaService
           .eliminarMascota(mascotaSeleccionada)
           .subscribe({
-            next: (response) => {},
-            error: () => {},
+            next: (response) => {
+              this.consultarMascotas();
+            },
+            error: () => { },
           })
-          .add(() => {});
+          .add(() => { });
       }
     });
   }
@@ -276,7 +145,7 @@ export class MascotasComponent implements OnInit {
       next: (response) => {
         this.listadoClientes = response;
       },
-      error: () => {},
+      error: () => { },
     });
   }
 

@@ -21,7 +21,7 @@ export class AgregarClienteComponent implements OnInit {
     private ref: MatDialogRef<AgregarClienteComponent>,
     private fb: FormBuilder,
     private clienteService: ClienteService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initFormBuilder();
@@ -73,10 +73,12 @@ export class AgregarClienteComponent implements OnInit {
     this.clienteService
       .guardarCliente(clienteNuevo)
       .subscribe({
-        next: (response) => {},
-        error: () => {},
+        next: (response) => {
+          this.closepopup();
+        },
+        error: () => { },
       })
-      .add(() => {});
+      .add(() => { });
   }
 
   editarCliente() {
@@ -89,10 +91,12 @@ export class AgregarClienteComponent implements OnInit {
     this.clienteService
       .editarCliente(clienteEditado)
       .subscribe({
-        next: (response) => {},
-        error: () => {},
+        next: () => {
+          this.closepopup();
+        },
+        error: () => { },
       })
-      .add(() => {});
+      .add(() => { });
   }
   obtenerDatosForm(): Cliente {
     const { cedula, nombre, apellido, telefono, correo, direccion } =

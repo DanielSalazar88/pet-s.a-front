@@ -21,10 +21,11 @@ export class AgregarRecetaComponent implements OnInit {
     private ref: MatDialogRef<AgregarRecetaComponent>,
     private fb: FormBuilder,
     private recetaService: RecetaService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initFormBuilder();
+    console.log(this.data.mascotas);
   }
 
   private initFormBuilder() {
@@ -34,7 +35,7 @@ export class AgregarRecetaComponent implements OnInit {
         [Validators.required, Validators.maxLength(15)],
       ],
       mascota: [
-        this.data.edit ? this.data.data?.mascota.id : '',
+        this.data.edit ? this.data.data?.mascota.id_mascota : '',
         [Validators.required, Validators.maxLength(200)],
       ],
     });
@@ -55,28 +56,12 @@ export class AgregarRecetaComponent implements OnInit {
     this.recetaService
       .guardarReceta(recetaNueva)
       .subscribe({
-        next: (response) => {},
-        error: () => {},
+        next: (response) => {
+          this.closepopup();
+        },
+        error: () => { },
       })
-      .add(() => {});
-  }
-
-  editarReceta() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-    const recetaEditada: Receta = this.obtenerDatosForm();
-    recetaEditada.id = this.data.data?.id ?? '0';
-    console.log(recetaEditada);
-
-    this.recetaService
-      .editarReceta(recetaEditada)
-      .subscribe({
-        next: (response) => {},
-        error: () => {},
-      })
-      .add(() => {});
+      .add(() => { });
   }
 
   obtenerDatosForm(): Receta {

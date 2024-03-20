@@ -3,7 +3,7 @@ import { HomeComponent } from './features/pages/home/home.component';
 
 export const routes: Routes = [
   {
-    path: 'pets',
+    path: 'clinica-pet',
     loadChildren: () =>
       import('./features/features.module').then((m) => m.FeaturesModule),
   },

@@ -1,4 +1,6 @@
 export interface Medicamento {
-  id: string;
+  id?: number;
   nombre: string;
+  dosis:string;
+  descripcion:string;
 }

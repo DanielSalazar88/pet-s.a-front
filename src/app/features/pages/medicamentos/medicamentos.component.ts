@@ -20,37 +20,19 @@ export class MedicamentosComponent implements OnInit {
 
   form: FormGroup;
 
-  medicamentos: Medicamento[] = [
-    {
-      id: '1',
-      nombre: 'Paracetamol',
-    },
-    {
-      id: '2',
-      nombre: 'Ibuprofeno',
-    },
-    {
-      id: '3',
-      nombre: 'Amoxicilina',
-    },
-    {
-      id: '4',
-      nombre: 'Omeprazol',
-    },
-  ];
 
   filtroId = '';
   filtroDescripcion = '';
 
   informacionMedicamentos: MatTableDataSource<Medicamento> =
-    new MatTableDataSource<Medicamento>(this.medicamentos);
+    new MatTableDataSource<Medicamento>();
 
-  displayedColumns: string[] = ['id', 'nombre', 'acciones'];
+  displayedColumns: string[] = ['id', 'nombre', 'dosis', 'descripcion', 'acciones'];
 
   constructor(
     private dialog: MatDialog,
     private medicamentoService: MedicamentoService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.consultarMedicamentos();
@@ -60,14 +42,10 @@ export class MedicamentosComponent implements OnInit {
       filter: string
     ): boolean => {
       const filters = JSON.parse(filter);
-      const matchNroDocumento = data.id
-        .toString()
-        .toLowerCase()
-        .includes(filters.nroDocumento);
       const matchDescripcion = data.nombre
         .toLowerCase()
         .includes(filters.descripcion);
-      return matchNroDocumento && matchDescripcion;
+      return matchDescripcion;
     };
   }
 
@@ -81,7 +59,9 @@ export class MedicamentosComponent implements OnInit {
         this.informacionMedicamentos.data = response;
         this.informacionMedicamentos.paginator = this.paginator;
       },
-      error: () => {},
+      error: () => {
+        this.informacionMedicamentos.data = [];
+      },
     });
   }
 
@@ -135,10 +115,12 @@ export class MedicamentosComponent implements OnInit {
         this.medicamentoService
           .eliminarMedicamento(medicamentoSeleccionado)
           .subscribe({
-            next: (response) => {},
-            error: () => {},
+            next: (response) => {
+              this.consultarMedicamentos();
+            },
+            error: () => { },
           })
-          .add(() => {});
+          .add(() => { });
       }
     });
   }

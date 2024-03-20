@@ -21,27 +21,27 @@ export class MenuComponent {
     {
       icon: 'pets',
       label: 'Mascotas',
-      route: 'pets/mascotas',
+      route: 'clinica-pet/mascotas',
     },
     {
       icon: 'group',
       label: 'Clientes',
-      route: 'pets/clientes',
+      route: 'clinica-pet/clientes',
     },
     {
       icon: 'medication',
       label: 'Medicinas',
-      route: 'pets/medicamentos',
+      route: 'clinica-pet/medicamentos',
     },
     {
       icon: 'description',
       label: 'Recetas',
-      route: 'pets/recetas',
+      route: 'clinica-pet/recetas',
     },
     {
       icon: 'file_copy',
       label: 'Reportes',
-      route: 'pets/reportes',
+      route: 'clinica-pet/reportes',
     },
   ];
 }

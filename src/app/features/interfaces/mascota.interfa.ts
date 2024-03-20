@@ -1,7 +1,7 @@
 import { Cliente } from './cliente.interface';
 
 export interface Mascota {
-  id?: string;
+  id_mascota?: number;
   nombre: string;
   raza: string;
   edad: number;

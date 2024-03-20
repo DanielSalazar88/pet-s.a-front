@@ -124,7 +124,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
   filtroDescripcion = '';
 
   informacionClientes: MatTableDataSource<Cliente> =
-    new MatTableDataSource<Cliente>(this.clientes);
+    new MatTableDataSource<Cliente>();
   displayedColumns: string[] = [
     'cedula',
     'nombre',
@@ -138,7 +138,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
   constructor(
     private clienteService: ClienteService,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.consultarClientes();
@@ -164,14 +164,14 @@ export class ClientesComponent implements OnInit, AfterViewInit {
   }
 
   consultarClientes(): void {
-    console.log('Entra');
     this.clienteService.consultarClientes().subscribe({
       next: (response) => {
         this.informacionClientes.data = response;
         this.informacionClientes.paginator = this.paginator;
       },
       error: (error) => {
-        console.log('ERRRPR',error);
+        console.log('ERROR', error);
+        this.informacionClientes.data = [];
       },
     });
   }
@@ -226,10 +226,12 @@ export class ClientesComponent implements OnInit, AfterViewInit {
         this.clienteService
           .eliminarCliente(clienteSeleccionado.cedula)
           .subscribe({
-            next: (response) => {},
-            error: () => {},
+            next: () => {
+              this.consultarClientes();
+            },
+            error: () => { },
           })
-          .add(() => {});
+          .add(() => { });
       }
     });
   }

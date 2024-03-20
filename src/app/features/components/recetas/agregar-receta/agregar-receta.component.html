@@ -12,10 +12,7 @@
           <mat-form-field>
             <mat-label>Medicamento</mat-label>
             <mat-select formControlName="medicamento">
-              <mat-option
-                *ngFor="let medicamento of data.medicamentos"
-                [value]="medicamento.id"
-              >
+              <mat-option *ngFor="let medicamento of data.medicamentos" [value]="medicamento">
                 {{ medicamento.nombre }}
               </mat-option>
             </mat-select>
@@ -25,11 +22,8 @@
           <mat-form-field>
             <mat-label>Mascota</mat-label>
             <mat-select formControlName="mascota">
-              <mat-option
-                *ngFor="let mascota of data.mascotas"
-                [value]="mascota.id"
-              >
-                {{ mascota.nombre }} -{{ mascota.id }}
+              <mat-option *ngFor="let mascota of data.mascotas" [value]="mascota">
+                {{ mascota.nombre }} -{{ mascota.id_mascota }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -37,31 +31,11 @@
         <div></div>
       </div>
       <mat-card-actions class="mat-dialog-actions">
-        <button
-          mat-raised-button
-          color="accent"
-          class="btn"
-          (click)="closepopup()"
-        >
+        <button mat-raised-button color="accent" class="btn" (click)="closepopup()">
           Cancelar
         </button>
-        <button
-          (click)="guardarReceta()"
-          mat-raised-button
-          color="accent"
-          class="btn"
-          *ngIf="!data.edit"
-        >
+        <button (click)="guardarReceta()" mat-raised-button color="accent" class="btn" *ngIf="!data.edit">
           Agregar
-        </button>
-        <button
-          (click)="editarReceta()"
-          mat-raised-button
-          color="accent"
-          class="btn"
-          *ngIf="data.edit"
-        >
-          Editar
         </button>
       </mat-card-actions>
     </form>
