@@ -28,6 +28,7 @@ import { AgregarRecetaComponent } from './components/recetas/agregar-receta/agre
 import { MatSelectModule } from '@angular/material/select';
 import { ReportesComponent } from './pages/reportes/reportes.component';
 import { ReporteService } from './services/reporte.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { ReporteService } from './services/reporte.service';
     HttpClientModule,
     MatSelectModule,
     SharedModule,
+    MatSnackBarModule,
   ],
   providers: [
     ClienteService,

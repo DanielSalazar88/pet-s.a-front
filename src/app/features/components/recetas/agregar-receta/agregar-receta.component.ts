@@ -5,6 +5,8 @@ import { RecetaService } from '../../../services/receta.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ErrorService } from '../../../services/errores.service';
+import { NotificationService } from '../../../services/notification.service';
+import { LoadingService } from '../../../../shared/services/loading.service';
 
 @Component({
   selector: 'app-agregar-receta',
@@ -22,8 +24,10 @@ export class AgregarRecetaComponent implements OnInit {
     private ref: MatDialogRef<AgregarRecetaComponent>,
     private fb: FormBuilder,
     private recetaService: RecetaService,
-    public readonly errorService: ErrorService
-  ) { }
+    public readonly errorService: ErrorService,
+    private notificacionService: NotificationService,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {
     this.initFormBuilder();
@@ -53,15 +57,30 @@ export class AgregarRecetaComponent implements OnInit {
     }
 
     const recetaNueva: Receta = this.obtenerDatosForm();
+
+    this.loadingService.show();
     this.recetaService
       .guardarReceta(recetaNueva)
       .subscribe({
-        next: (response) => {
+        next: () => {
+          this.notificacionService.openSnackBar(
+            'Receta Guardada Exitosamente',
+            'right',
+            'top',
+            2000
+          );
           this.closepopup();
         },
-        error: () => { },
+        error: () => {
+          this.notificacionService.openSnackBar(
+            'Error Al Agregar Receta',
+            'right',
+            'top',
+            2000
+          );
+        },
       })
-      .add(() => { });
+      .add(() => this.loadingService.hide());
   }
 
   obtenerDatosForm(): Receta {

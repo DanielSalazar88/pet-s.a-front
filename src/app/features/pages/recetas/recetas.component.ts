@@ -13,6 +13,8 @@ import { MedicamentoService } from '../../services/medicamento.service';
 import { MascotaService } from '../../services/mascota.service';
 import { Mascota } from '../../interfaces/mascota.interfa';
 import { Medicamento } from '../../interfaces/medicamento.inteface';
+import { NotificationService } from '../../services/notification.service';
+import { LoadingService } from '../../../shared/services/loading.service';
 
 @Component({
   selector: 'app-recetas',
@@ -27,16 +29,11 @@ export class RecetasComponent implements OnInit {
   listMascotas: Mascota[];
   listMedicamentos: Medicamento[];
 
-  recetas: Receta[] = [
-
-    // Puedes añadir más datos de recetas aquí si lo deseas
-  ];
-
   filtroDescripcion = '';
   filtroNombreMascota = '';
 
   informacionRecetas: MatTableDataSource<Receta> =
-    new MatTableDataSource<Receta>(this.recetas);
+    new MatTableDataSource<Receta>();
 
   displayedColumns: string[] = ['id', 'medicamento', 'mascota', 'acciones'];
 
@@ -44,8 +41,10 @@ export class RecetasComponent implements OnInit {
     private dialog: MatDialog,
     private recetaService: RecetaService,
     private medicamentoService: MedicamentoService,
-    private mascotaService: MascotaService
-  ) { }
+    private mascotaService: MascotaService,
+    private notificacionService: NotificationService,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {
     this.consultarRecetas();
@@ -58,11 +57,9 @@ export class RecetasComponent implements OnInit {
     ): boolean => {
       const filters = JSON.parse(filter);
 
-
       const matchDescripcion = data.medicamento.nombre
         .toLowerCase()
         .includes(filters.descripcion);
-
 
       const mathNombreMascota = data.mascota.nombre
         .toLowerCase()
@@ -77,15 +74,19 @@ export class RecetasComponent implements OnInit {
   }
 
   consultarRecetas(): void {
-    this.recetaService.consultarRecetas().subscribe({
-      next: (response) => {
-        this.informacionRecetas.data = response;
-        this.informacionRecetas.paginator = this.paginator;
-      },
-      error: () => {
-        this.informacionRecetas.data = [];
-      },
-    });
+    this.loadingService.show();
+    this.recetaService
+      .consultarRecetas()
+      .subscribe({
+        next: (response) => {
+          this.informacionRecetas.data = response;
+          this.informacionRecetas.paginator = this.paginator;
+        },
+        error: () => {
+          this.informacionRecetas.data = [];
+        },
+      })
+      .add(() => this.loadingService.hide());
   }
 
   agregarReceta(): void {
@@ -107,7 +108,6 @@ export class RecetasComponent implements OnInit {
     });
   }
 
-
   eliminarReceta(recetaSeleccionada: Receta): void {
     const dialog = this.dialog.open(DialogSimpleComponent, {
       width: '40%',
@@ -120,15 +120,29 @@ export class RecetasComponent implements OnInit {
 
     dialog.afterClosed().subscribe((res) => {
       if (res) {
+        this.loadingService.show();
         this.recetaService
           .eliminarReceta(recetaSeleccionada)
           .subscribe({
-            next: (response) => {
+            next: () => {
+              this.notificacionService.openSnackBar(
+                'Receta Eliminada',
+                'right',
+                'top',
+                2000
+              );
               this.consultarRecetas();
             },
-            error: () => { },
+            error: () => {
+              this.notificacionService.openSnackBar(
+                'Error Al Eliminar Receta',
+                'right',
+                'top',
+                2000
+              );
+            },
           })
-          .add(() => { });
+          .add(() => this.loadingService.hide());
       }
     });
   }
@@ -138,7 +152,7 @@ export class RecetasComponent implements OnInit {
       next: (response) => {
         this.listMascotas = response;
       },
-      error: () => { },
+      error: () => {},
     });
   }
 
@@ -147,7 +161,7 @@ export class RecetasComponent implements OnInit {
       next: (response) => {
         this.listMedicamentos = response;
       },
-      error: () => { },
+      error: () => {},
     });
   }
 

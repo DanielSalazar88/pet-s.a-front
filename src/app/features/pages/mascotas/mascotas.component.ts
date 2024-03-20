@@ -11,6 +11,8 @@ import { MascotaService } from '../../services/mascota.service';
 import { AgregarMascotaComponent } from '../../components/mascotas/agregar-mascota/agregar-mascota.component';
 import { DialogDataMascota } from '../../interfaces/dialog-data-mascota.interface';
 import { ClienteService } from '../../services/cliente.service';
+import { NotificationService } from '../../services/notification.service';
+import { LoadingService } from '../../../shared/services/loading.service';
 
 @Component({
   selector: 'app-mascotas',
@@ -42,8 +44,10 @@ export class MascotasComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private mascotaService: MascotaService,
-    private clienteService: ClienteService
-  ) { }
+    private clienteService: ClienteService,
+    private notificacionService: NotificationService,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {
     this.consultarMascotas();
@@ -67,15 +71,19 @@ export class MascotasComponent implements OnInit {
   }
 
   consultarMascotas(): void {
-    this.mascotaService.consultarMascotas().subscribe({
-      next: (response) => {
-        this.informacionMascotas.data = response;
-        this.informacionMascotas.paginator = this.paginator;
-      },
-      error: () => {
-        this.informacionMascotas.data = [];
-      },
-    });
+    this.loadingService.show();
+    this.mascotaService
+      .consultarMascotas()
+      .subscribe({
+        next: (response) => {
+          this.informacionMascotas.data = response;
+          this.informacionMascotas.paginator = this.paginator;
+        },
+        error: () => {
+          this.informacionMascotas.data = [];
+        },
+      })
+      .add(() => this.loadingService.hide());
   }
 
   agregarMascota(): void {
@@ -127,15 +135,29 @@ export class MascotasComponent implements OnInit {
 
     dialog.afterClosed().subscribe((res) => {
       if (res) {
+        this.loadingService.show();
         this.mascotaService
           .eliminarMascota(mascotaSeleccionada)
           .subscribe({
-            next: (response) => {
+            next: () => {
+              this.notificacionService.openSnackBar(
+                'Mascota Eliminada ',
+                'right',
+                'top',
+                2000
+              );
               this.consultarMascotas();
             },
-            error: () => { },
+            error: () => {
+              this.notificacionService.openSnackBar(
+                'Error Al Eliminar La Mascota',
+                'right',
+                'top',
+                2000
+              );
+            },
           })
-          .add(() => { });
+          .add(() => this.loadingService.hide());
       }
     });
   }
@@ -145,7 +167,7 @@ export class MascotasComponent implements OnInit {
       next: (response) => {
         this.listadoClientes = response;
       },
-      error: () => { },
+      error: () => {},
     });
   }
 

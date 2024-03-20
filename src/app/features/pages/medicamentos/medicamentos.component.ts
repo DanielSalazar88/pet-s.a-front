@@ -9,6 +9,8 @@ import { DialogSimpleComponent } from '../../../shared/components/dialog-simple/
 import { DialogData } from '../../interfaces/dialog-data.interface';
 import { AgregarMedicamentoComponent } from '../../components/medicamentos/agregar-medicamento/agregar-medicamento.component';
 import { DialogDataMedicamento } from '../../interfaces/dialog-data-medicamento.interface';
+import { NotificationService } from '../../services/notification.service';
+import { LoadingService } from '../../../shared/services/loading.service';
 
 @Component({
   selector: 'app-medicamentos',
@@ -20,19 +22,26 @@ export class MedicamentosComponent implements OnInit {
 
   form: FormGroup;
 
-
   filtroId = '';
   filtroDescripcion = '';
 
   informacionMedicamentos: MatTableDataSource<Medicamento> =
     new MatTableDataSource<Medicamento>();
 
-  displayedColumns: string[] = ['id', 'nombre', 'dosis', 'descripcion', 'acciones'];
+  displayedColumns: string[] = [
+    'id',
+    'nombre',
+    'dosis',
+    'descripcion',
+    'acciones',
+  ];
 
   constructor(
     private dialog: MatDialog,
-    private medicamentoService: MedicamentoService
-  ) { }
+    private medicamentoService: MedicamentoService,
+    private notificacionService: NotificationService,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {
     this.consultarMedicamentos();
@@ -54,15 +63,19 @@ export class MedicamentosComponent implements OnInit {
   }
 
   consultarMedicamentos(): void {
-    this.medicamentoService.consultarMedicamento().subscribe({
-      next: (response) => {
-        this.informacionMedicamentos.data = response;
-        this.informacionMedicamentos.paginator = this.paginator;
-      },
-      error: () => {
-        this.informacionMedicamentos.data = [];
-      },
-    });
+    this.loadingService.show();
+    this.medicamentoService
+      .consultarMedicamento()
+      .subscribe({
+        next: (response) => {
+          this.informacionMedicamentos.data = response;
+          this.informacionMedicamentos.paginator = this.paginator;
+        },
+        error: () => {
+          this.informacionMedicamentos.data = [];
+        },
+      })
+      .add(() => this.loadingService.hide());
   }
 
   agregarMedicamento(): void {
@@ -112,15 +125,29 @@ export class MedicamentosComponent implements OnInit {
 
     dialog.afterClosed().subscribe((res) => {
       if (res) {
+        this.loadingService.show();
         this.medicamentoService
           .eliminarMedicamento(medicamentoSeleccionado)
           .subscribe({
-            next: (response) => {
+            next: () => {
+              this.notificacionService.openSnackBar(
+                'Medicamento Eliminado',
+                'right',
+                'top',
+                2000
+              );
               this.consultarMedicamentos();
             },
-            error: () => { },
+            error: () => {
+              this.notificacionService.openSnackBar(
+                'Error Al Eliminar El Medicamento',
+                'right',
+                'top',
+                2000
+              );
+            },
           })
-          .add(() => { });
+          .add(() => this.loadingService.hide());
       }
     });
   }

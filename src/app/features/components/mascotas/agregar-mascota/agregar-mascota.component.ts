@@ -5,6 +5,8 @@ import { MascotaService } from '../../../services/mascota.service';
 import { Mascota } from '../../../interfaces/mascota.interfa';
 import { DialogDataMascota } from '../../../interfaces/dialog-data-mascota.interface';
 import { ErrorService } from '../../../services/errores.service';
+import { NotificationService } from '../../../services/notification.service';
+import { LoadingService } from '../../../../shared/services/loading.service';
 
 @Component({
   selector: 'app-agregar-mascota',
@@ -22,7 +24,9 @@ export class AgregarMascotaComponent implements OnInit {
     private ref: MatDialogRef<AgregarMascotaComponent>,
     private fb: FormBuilder,
     private mascotaService: MascotaService,
-    public readonly errorService: ErrorService
+    public readonly errorService: ErrorService,
+    private notificacionService: NotificationService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -75,15 +79,30 @@ export class AgregarMascotaComponent implements OnInit {
     }
 
     const mascotaNueva: Mascota = this.obtenerDatosForm();
+
+    this.loadingService.show();
     this.mascotaService
       .guardarMascota(mascotaNueva)
       .subscribe({
-        next: (response) => {
+        next: () => {
+          this.notificacionService.openSnackBar(
+            'Mascota Agregada Exitosamente ',
+            'right',
+            'top',
+            2000
+          );
           this.closepopup();
         },
-        error: () => {},
+        error: () => {
+          this.notificacionService.openSnackBar(
+            'Error Al Agregar Mascota',
+            'right',
+            'top',
+            2000
+          );
+        },
       })
-      .add(() => {});
+      .add(() => this.loadingService.hide());
   }
 
   editarMascota() {
@@ -94,15 +113,29 @@ export class AgregarMascotaComponent implements OnInit {
     const mascotaEditada: Mascota = this.obtenerDatosForm();
     mascotaEditada.id_mascota = this.data.data?.id_mascota ?? 0;
 
+    this.loadingService.show();
     this.mascotaService
       .editarMascota(mascotaEditada)
       .subscribe({
         next: (response) => {
+          this.notificacionService.openSnackBar(
+            'Mascota Editada Exitosamente ',
+            'right',
+            'top',
+            2000
+          );
           this.closepopup();
         },
-        error: () => {},
+        error: () => {
+          this.notificacionService.openSnackBar(
+            'Error Al Editar Mascota',
+            'right',
+            'top',
+            2000
+          );
+        },
       })
-      .add(() => {});
+      .add(() => this.loadingService.hide());
   }
 
   obtenerDatosForm(): Mascota {

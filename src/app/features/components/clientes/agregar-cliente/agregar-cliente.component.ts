@@ -5,6 +5,8 @@ import { ClienteService } from '../../../services/cliente.service';
 import { Cliente } from '../../../interfaces/cliente.interface';
 import { DialogDataCliente } from '../../../interfaces/dialog-data-cliente.interface';
 import { ErrorService } from '../../../services/errores.service';
+import { NotificationService } from '../../../services/notification.service';
+import { LoadingService } from '../../../../shared/services/loading.service';
 
 @Component({
   selector: 'app-agregar-cliente',
@@ -22,7 +24,9 @@ export class AgregarClienteComponent implements OnInit {
     private ref: MatDialogRef<AgregarClienteComponent>,
     private fb: FormBuilder,
     private clienteService: ClienteService,
-    public readonly errorService: ErrorService
+    public readonly errorService: ErrorService,
+    private notificacionService: NotificationService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -77,15 +81,30 @@ export class AgregarClienteComponent implements OnInit {
     }
 
     const clienteNuevo: Cliente = this.obtenerDatosForm();
+
+    this.loadingService.show();
     this.clienteService
       .guardarCliente(clienteNuevo)
       .subscribe({
-        next: (response) => {
+        next: () => {
+          this.notificacionService.openSnackBar(
+            'Cliente Agregado Exitosamente',
+            'right',
+            'top',
+            2000
+          );
           this.closepopup();
         },
-        error: () => {},
+        error: () => {
+          this.notificacionService.openSnackBar(
+            'Error Al Guardar El Cliente',
+            'right',
+            'top',
+            2000
+          );
+        },
       })
-      .add(() => {});
+      .add(() => this.loadingService.hide());
   }
 
   editarCliente() {
@@ -95,15 +114,30 @@ export class AgregarClienteComponent implements OnInit {
     }
     const clienteEditado: Cliente = this.obtenerDatosForm();
     clienteEditado.cedula = this.data.data?.cedula ?? '0';
+
+    this.loadingService.show();
     this.clienteService
       .editarCliente(clienteEditado)
       .subscribe({
         next: () => {
+          this.notificacionService.openSnackBar(
+            'Cliente Editado Exitosamente',
+            'right',
+            'top',
+            2000
+          );
           this.closepopup();
         },
-        error: () => {},
+        error: () => {
+          this.notificacionService.openSnackBar(
+            'Error Al Editar El Cliente',
+            'right',
+            'top',
+            2000
+          );
+        },
       })
-      .add(() => {});
+      .add(() => this.loadingService.hide());
   }
 
   obtenerDatosForm(): Cliente {

@@ -9,6 +9,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { AgregarClienteComponent } from '../../components/clientes/agregar-cliente/agregar-cliente.component';
 import { DialogSimpleComponent } from '../../../shared/components/dialog-simple/dialog-simple.component';
 import { DialogDataCliente } from '../../interfaces/dialog-data-cliente.interface';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+import { NotificationService } from '../../services/notification.service';
+import { LoadingService } from '../../../shared/services/loading.service';
 
 @Component({
   selector: 'app-clientes',
@@ -38,7 +45,9 @@ export class ClientesComponent implements OnInit, AfterViewInit {
 
   constructor(
     private clienteService: ClienteService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private notificacionService: NotificationService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -65,15 +74,19 @@ export class ClientesComponent implements OnInit, AfterViewInit {
   }
 
   consultarClientes(): void {
-    this.clienteService.consultarClientes().subscribe({
-      next: (response) => {
-        this.informacionClientes.data = response;
-        this.informacionClientes.paginator = this.paginator;
-      },
-      error: (error) => {
-        this.informacionClientes.data = [];
-      },
-    });
+    this.loadingService.show();
+    this.clienteService
+      .consultarClientes()
+      .subscribe({
+        next: (response) => {
+          this.informacionClientes.data = response;
+          this.informacionClientes.paginator = this.paginator;
+        },
+        error: () => {
+          this.informacionClientes.data = [];
+        },
+      })
+      .add(() => this.loadingService.hide());
   }
 
   agregarCliente(): void {
@@ -123,15 +136,29 @@ export class ClientesComponent implements OnInit, AfterViewInit {
 
     dialog.afterClosed().subscribe((res) => {
       if (res) {
+        this.loadingService.show();
         this.clienteService
           .eliminarCliente(clienteSeleccionado.cedula)
           .subscribe({
             next: () => {
+              this.notificacionService.openSnackBar(
+                'Cliente Eliminado',
+                'right',
+                'top',
+                2000
+              );
               this.consultarClientes();
             },
-            error: () => {},
+            error: () => {
+              this.notificacionService.openSnackBar(
+                'Error Al Eliminar El Cliente',
+                'right',
+                'top',
+                2000
+              );
+            },
           })
-          .add(() => {});
+          .add(() => this.loadingService.hide());
       }
     });
   }

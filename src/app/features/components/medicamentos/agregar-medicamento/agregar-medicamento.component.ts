@@ -5,6 +5,8 @@ import { MedicamentoService } from '../../../services/medicamento.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ErrorService } from '../../../services/errores.service';
+import { NotificationService } from '../../../services/notification.service';
+import { LoadingService } from '../../../../shared/services/loading.service';
 
 @Component({
   selector: 'app-agregar-medicamento',
@@ -22,7 +24,9 @@ export class AgregarMedicamentoComponent implements OnInit {
     private ref: MatDialogRef<AgregarMedicamentoComponent>,
     private fb: FormBuilder,
     private medicamentoService: MedicamentoService,
-    public readonly errorService: ErrorService
+    public readonly errorService: ErrorService,
+    private notificacionService: NotificationService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -57,15 +61,30 @@ export class AgregarMedicamentoComponent implements OnInit {
     }
 
     const medicamentoNuevo: Medicamento = this.obtenerDatosForm();
+
+    this.loadingService.show();
     this.medicamentoService
       .guardarMedicamento(medicamentoNuevo)
       .subscribe({
-        next: (response) => {
+        next: () => {
+          this.notificacionService.openSnackBar(
+            'Medicamento Guardado Exitosamente',
+            'right',
+            'top',
+            2000
+          );
           this.closepopup();
         },
-        error: () => {},
+        error: () => {
+          this.notificacionService.openSnackBar(
+            'Error Al Guardar Medicamento',
+            'right',
+            'top',
+            2000
+          );
+        },
       })
-      .add(() => {});
+      .add(() => this.loadingService.hide());
   }
 
   editarMedicamento() {
@@ -76,15 +95,29 @@ export class AgregarMedicamentoComponent implements OnInit {
     const medicamentoEditado: Medicamento = this.obtenerDatosForm();
     medicamentoEditado.id = this.data.data?.id ?? 0;
 
+    this.loadingService.show();
     this.medicamentoService
       .editarMedicamento(medicamentoEditado)
       .subscribe({
-        next: (response) => {
+        next: () => {
+          this.notificacionService.openSnackBar(
+            'Medicamento Editado Exitosamente',
+            'right',
+            'top',
+            2000
+          );
           this.closepopup();
         },
-        error: () => {},
+        error: () => {
+          this.notificacionService.openSnackBar(
+            'Error Al Editar Medicamento',
+            'right',
+            'top',
+            2000
+          );
+        },
       })
-      .add(() => {});
+      .add(() => this.loadingService.hide());
   }
 
   obtenerDatosForm(): Medicamento {

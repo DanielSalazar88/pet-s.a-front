@@ -15,9 +15,19 @@
                   formControlName="tipoReporte"
                   (selectionChange)="validarCampos()"
                 >
-                  <mat-option value="CLIENTE">Mascota Por Cliente</mat-option>
-                  <mat-option value="RECETA">Receta de Mascota</mat-option>
+                  <mat-option value="CLIENTE"
+                    >Reporte Por Cédula Cliente</mat-option
+                  >
+                  <mat-option value="RECETA">Reporte Por Mascota</mat-option>
                 </mat-select>
+                <mat-error
+                  *ngIf="
+                    form.get('tipoReporte')?.invalid &&
+                    form.get('tipoReporte')?.touched
+                  "
+                >
+                  {{ errorService.getErrorMessage(form, "tipoReporte") }}
+                </mat-error>
               </mat-form-field>
             </div>
             <div
@@ -35,6 +45,14 @@
                     {{ cliente.cedula }}
                   </mat-option>
                 </mat-select>
+                <mat-error
+                  *ngIf="
+                    form.get('reporteCliente')?.invalid &&
+                    form.get('reporteCliente')?.touched
+                  "
+                >
+                  {{ errorService.getErrorMessage(form, "reporteCliente") }}
+                </mat-error>
               </mat-form-field>
             </div>
             <div
@@ -51,13 +69,26 @@
                     {{ mascota.nombre }}- {{ mascota.id_mascota }} -
                   </mat-option>
                 </mat-select>
+                <mat-error
+                  *ngIf="
+                    form.get('reporteMascota')?.invalid &&
+                    form.get('reporteMascota')?.touched
+                  "
+                >
+                  {{ errorService.getErrorMessage(form, "reporteMascota") }}
+                </mat-error>
               </mat-form-field>
             </div>
           </div>
         </form>
 
         <mat-card-actions class="mat-dialog-actions">
-          <button mat-raised-button color="accent" class="btn" (click)="generarReporte()">
+          <button
+            mat-raised-button
+            color="accent"
+            class="btn"
+            (click)="generarReporte()"
+          >
             Generar Reporte
           </button>
         </mat-card-actions>

@@ -13,3 +13,11 @@
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<div *ngIf="loadingService.isLoading()" class="overlay">
+  <mat-spinner
+    *ngIf="loadingService.isLoading()"
+    diameter="100"
+    color="primary"
+  ></mat-spinner>
+</div>
