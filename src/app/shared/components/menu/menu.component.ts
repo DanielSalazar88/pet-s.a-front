@@ -19,14 +19,14 @@ export class MenuComponent {
       route: '',
     },
     {
-      icon: 'pets',
-      label: 'Mascotas',
-      route: 'clinica-pet/mascotas',
-    },
-    {
       icon: 'group',
       label: 'Clientes',
       route: 'clinica-pet/clientes',
+    },
+    {
+      icon: 'pets',
+      label: 'Mascotas',
+      route: 'clinica-pet/mascotas',
     },
     {
       icon: 'medication',
