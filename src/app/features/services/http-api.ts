@@ -3,6 +3,7 @@ export class HttpApi {
   static readonly SOLICITUD_BASE_MASCOTAS = 'pets';
   static readonly SOLICITUD_BASE_MEDICAMENTOS = 'medicines';
   static readonly SOLICITUD_BASE_RECETAS = 'recipes';
+  static readonly SOLICITUD_BASE_REPORTES = 'reports';
 
   /*Clientes */
   static readonly CONSULTAR_CLIENTES = `${this.SOLICITUD_BASE_CLIENTES}/get-clients/`;
@@ -26,4 +27,8 @@ export class HttpApi {
   static readonly CONSULTAR_RECETAS = `${this.SOLICITUD_BASE_RECETAS}/get-recipes/`;
   static readonly GUARDAR_RECETA = `${this.SOLICITUD_BASE_RECETAS}/insert-recipe/`;
   static readonly ELIMINAR_RECETA = `${this.SOLICITUD_BASE_RECETAS}/delete-recipe/`;
+
+  /*Reportes */
+  static readonly CONSULTA_REPORTE_CLIENTE = `${this.SOLICITUD_BASE_RECETAS}/client-report/`;
+  static readonly CONSULTA_REPORTE_RECETAS = `${this.SOLICITUD_BASE_RECETAS}/pet-report//`;
 }

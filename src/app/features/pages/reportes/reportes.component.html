@@ -1,0 +1,67 @@
+<div class="p-10">
+  <mat-card class="rounded-lg shadow-md">
+    <mat-card-header class="header-1 bg-blue-800 text-white rounded-t-lg">
+      <mat-card-title class="uppercase">Reportes</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="mt-8">
+        <mat-card-title>Generación de Reportes</mat-card-title>
+        <form [formGroup]="form" class="mt-4">
+          <div class="flex mt-8 space-x-4 container-form m-4">
+            <div class="w-full">
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>Tipo de reporte</mat-label>
+                <mat-select
+                  formControlName="tipoReporte"
+                  (selectionChange)="validarCampos()"
+                >
+                  <mat-option value="CLIENTE">Mascota Por Cliente</mat-option>
+                  <mat-option value="RECETA">Receta de Mascota</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div
+              class="w-full"
+              *ngIf="form.get('tipoReporte')?.value === 'CLIENTE'"
+            >
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>Reporte Mascotas Por Cliente</mat-label>
+                <mat-select formControlName="reporteCliente">
+                  <mat-option
+                    *ngFor="let cliente of listaClientes"
+                    [value]="cliente.cedula"
+                  >
+                    {{ cliente.nombres }} {{ cliente.apellidos }} -
+                    {{ cliente.cedula }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div
+              class="w-full"
+              *ngIf="form.get('tipoReporte')?.value === 'RECETA'"
+            >
+              <mat-form-field appearance="fill" class="w-full">
+                <mat-label>Reporte Recetas Por Mascota</mat-label>
+                <mat-select formControlName="reporteMascota">
+                  <mat-option
+                    *ngFor="let mascota of listaMascotas"
+                    [value]="mascota.id_mascota"
+                  >
+                    {{ mascota.nombre }}- {{ mascota.id_mascota }} -
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+
+        <mat-card-actions class="mat-dialog-actions">
+          <button mat-raised-button color="accent" class="btn" (click)="generarReporte()">
+            Generar Reporte
+          </button>
+        </mat-card-actions>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

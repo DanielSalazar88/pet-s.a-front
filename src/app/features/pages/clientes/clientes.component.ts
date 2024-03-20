@@ -20,111 +20,12 @@ export class ClientesComponent implements OnInit, AfterViewInit {
 
   form: FormGroup;
 
-  clientes: Cliente[] = [
-    {
-      cedula: '1234567890',
-      nombres: 'Juan',
-      apellidos: 'Pérez',
-      telefono: '123-456-7890',
-      correo: 'juan@example.com',
-      direccion: 'Calle Principal 123',
-    },
-    {
-      cedula: '9876543210',
-      nombres: 'María',
-      apellidos: 'González',
-      telefono: '987-654-3210',
-      correo: 'maria@example.com',
-      direccion: 'Avenida Central 456',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    {
-      cedula: '4567890123',
-      nombres: 'Carlos',
-      apellidos: 'Sánchez',
-      telefono: '456-789-0123',
-      correo: 'carlos@example.com',
-      direccion: 'Plaza Mayor 789',
-    },
-    // Agrega más objetos Cliente según sea necesario
-  ];
-
   filtroNroDocumento = '';
   filtroDescripcion = '';
 
   informacionClientes: MatTableDataSource<Cliente> =
     new MatTableDataSource<Cliente>();
+
   displayedColumns: string[] = [
     'cedula',
     'nombre',
@@ -138,7 +39,7 @@ export class ClientesComponent implements OnInit, AfterViewInit {
   constructor(
     private clienteService: ClienteService,
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.consultarClientes();
@@ -228,9 +129,9 @@ export class ClientesComponent implements OnInit, AfterViewInit {
             next: () => {
               this.consultarClientes();
             },
-            error: () => { },
+            error: () => {},
           })
-          .add(() => { });
+          .add(() => {});
       }
     });
   }

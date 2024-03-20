@@ -26,6 +26,8 @@ import { RecetasComponent } from './pages/recetas/recetas.component';
 import { RecetaService } from './services/receta.service';
 import { AgregarRecetaComponent } from './components/recetas/agregar-receta/agregar-receta.component';
 import { MatSelectModule } from '@angular/material/select';
+import { ReportesComponent } from './pages/reportes/reportes.component';
+import { ReporteService } from './services/reporte.service';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { MatSelectModule } from '@angular/material/select';
     AgregarMedicamentoComponent,
     RecetasComponent,
     AgregarRecetaComponent,
+    ReportesComponent,
   ],
   imports: [
     CommonModule,
@@ -60,6 +63,7 @@ import { MatSelectModule } from '@angular/material/select';
     MascotaService,
     MedicamentoService,
     RecetaService,
+    ReporteService,
   ],
 })
 export class FeaturesModule {}
