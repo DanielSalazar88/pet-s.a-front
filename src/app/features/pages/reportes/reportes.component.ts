@@ -21,18 +21,13 @@ export class ReportesComponent implements OnInit {
 
   form: FormGroup;
 
-  dataList: any[] = [
-    { id: 1, name: 'John', age: 30 },
-    { id: 2, name: 'Alice', age: 25 },
-    { id: 3, name: 'Bob', age: 35 },
-  ];
   constructor(
     private clienteService: ClienteService,
     private fb: FormBuilder,
     private mascotaService: MascotaService,
     private reporteService: ReporteService,
     private excelSercice: ExcelService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initFormBuilder();
@@ -91,20 +86,44 @@ export class ReportesComponent implements OnInit {
 
     const tipoReporte = this.form.get('tipoReporte')?.value;
     if (tipoReporte === 'CLIENTE') {
-      this.reporteService.consultarReporteClientes().subscribe({
+      this.reporteService.consultarReporteClientes(this.form.get("reporteCliente")?.value).subscribe({
         next: (response) => {
+
+          const datosParaExcel = response[0].mascotas.map(mascota => ({
+            apellidos_cliente: response[0].apellidos_cliente,
+            cedula_cliente: response[0].cedula_cliente,
+            nombres_cliente: response[0].nombres_cliente,
+            descripcion_receta: mascota.descripcion_receta,
+            dosis_receta: mascota.dosis_receta,
+            nombre_mascota: mascota.nombre_mascota
+          }));
+
           this.excelSercice.exportToExcel(
-            response,
+            datosParaExcel,
             'Reporte Clientes',
             'Sheet1'
           );
+
         },
       });
     } else {
-      this.reporteService.consultarReporteRecetas().subscribe({
+      this.reporteService.consultarReporteRecetas(Number(this.form.get("reporteMascota")?.value)).subscribe({
         next: (response) => {
+
+          console.log(response[0].recetas)
+          const datosParaExcel = response[0].recetas.map(receta => ({
+            nombre_mascota: response[0].nombre_mascota,
+            edad_mascota: response[0].edad_mascota,
+            raza_masctora: response[0].raza_mascota,
+            peso_mascota: response[0].peso_mascota,
+            medicamento: receta.medicamento,
+            dosis_receta: receta.dosis_receta,
+            descripcion_receta: receta.descripcion_receta,
+
+          }));
+
           this.excelSercice.exportToExcel(
-            response,
+            datosParaExcel,
             'Reporte Recetas',
             'Sheet1'
           );

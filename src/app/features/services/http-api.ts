@@ -29,6 +29,6 @@ export class HttpApi {
   static readonly ELIMINAR_RECETA = `${this.SOLICITUD_BASE_RECETAS}/delete-recipe/`;
 
   /*Reportes */
-  static readonly CONSULTA_REPORTE_CLIENTE = `${this.SOLICITUD_BASE_RECETAS}/client-report/`;
-  static readonly CONSULTA_REPORTE_RECETAS = `${this.SOLICITUD_BASE_RECETAS}/pet-report//`;
+  static readonly CONSULTA_REPORTE_CLIENTE = `${this.SOLICITUD_BASE_REPORTES}/client-report/`;
+  static readonly CONSULTA_REPORTE_RECETAS = `${this.SOLICITUD_BASE_REPORTES}/pet-report/`;
 }
