@@ -4,6 +4,7 @@ import { DialogDataMedicamento } from '../../../interfaces/dialog-data-medicamen
 import { MedicamentoService } from '../../../services/medicamento.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ErrorService } from '../../../services/errores.service';
 
 @Component({
   selector: 'app-agregar-medicamento',
@@ -20,8 +21,9 @@ export class AgregarMedicamentoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogDataMedicamento,
     private ref: MatDialogRef<AgregarMedicamentoComponent>,
     private fb: FormBuilder,
-    private medicamentoService: MedicamentoService
-  ) { }
+    private medicamentoService: MedicamentoService,
+    public readonly errorService: ErrorService
+  ) {}
 
   ngOnInit(): void {
     this.initFormBuilder();
@@ -31,7 +33,7 @@ export class AgregarMedicamentoComponent implements OnInit {
     this.form = this.fb.group({
       nombre: [
         this.data.edit ? this.data.data?.nombre : '',
-        [Validators.required, Validators.maxLength(15)],
+        [Validators.required, Validators.maxLength(20)],
       ],
       dosis: [
         this.data.edit ? this.data.data?.dosis : '',
@@ -61,9 +63,9 @@ export class AgregarMedicamentoComponent implements OnInit {
         next: (response) => {
           this.closepopup();
         },
-        error: () => { },
+        error: () => {},
       })
-      .add(() => { });
+      .add(() => {});
   }
 
   editarMedicamento() {
@@ -80,9 +82,9 @@ export class AgregarMedicamentoComponent implements OnInit {
         next: (response) => {
           this.closepopup();
         },
-        error: () => { },
+        error: () => {},
       })
-      .add(() => { });
+      .add(() => {});
   }
 
   obtenerDatosForm(): Medicamento {
@@ -91,7 +93,7 @@ export class AgregarMedicamentoComponent implements OnInit {
     const medicamento: Medicamento = {
       nombre,
       dosis,
-      descripcion
+      descripcion,
     };
 
     return medicamento;

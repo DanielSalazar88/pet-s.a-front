@@ -4,6 +4,7 @@ import { DialogDataReceta } from '../../../interfaces/dialog-data-receta.interfa
 import { RecetaService } from '../../../services/receta.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ErrorService } from '../../../services/errores.service';
 
 @Component({
   selector: 'app-agregar-receta',
@@ -20,7 +21,8 @@ export class AgregarRecetaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogDataReceta,
     private ref: MatDialogRef<AgregarRecetaComponent>,
     private fb: FormBuilder,
-    private recetaService: RecetaService
+    private recetaService: RecetaService,
+    public readonly errorService: ErrorService
   ) { }
 
   ngOnInit(): void {
@@ -35,7 +37,7 @@ export class AgregarRecetaComponent implements OnInit {
       ],
       mascota: [
         this.data.edit ? this.data.data?.mascota.id_mascota : '',
-        [Validators.required, Validators.maxLength(200)],
+        [Validators.required, Validators.maxLength(15)],
       ],
     });
   }

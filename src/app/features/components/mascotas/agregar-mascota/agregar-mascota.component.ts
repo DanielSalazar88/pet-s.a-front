@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MascotaService } from '../../../services/mascota.service';
 import { Mascota } from '../../../interfaces/mascota.interfa';
 import { DialogDataMascota } from '../../../interfaces/dialog-data-mascota.interface';
+import { ErrorService } from '../../../services/errores.service';
 
 @Component({
   selector: 'app-agregar-mascota',
@@ -20,8 +21,9 @@ export class AgregarMascotaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogDataMascota,
     private ref: MatDialogRef<AgregarMascotaComponent>,
     private fb: FormBuilder,
-    private mascotaService: MascotaService
-  ) { }
+    private mascotaService: MascotaService,
+    public readonly errorService: ErrorService
+  ) {}
 
   ngOnInit(): void {
     this.initFormBuilder();
@@ -31,11 +33,15 @@ export class AgregarMascotaComponent implements OnInit {
     this.form = this.fb.group({
       nombre: [
         this.data.edit ? this.data.data?.nombre : '',
-        [Validators.required, Validators.maxLength(15)],
+        [Validators.required, Validators.maxLength(20)],
       ],
       edad: [
         this.data.edit ? this.data.data?.edad : '',
-        [Validators.required, Validators.maxLength(200)],
+        [
+          Validators.required,
+          Validators.maxLength(3),
+          Validators.pattern(/^([0-9])*$/),
+        ],
       ],
       raza: [
         this.data.edit ? this.data.data?.raza : '',
@@ -49,7 +55,12 @@ export class AgregarMascotaComponent implements OnInit {
           : '',
         Validators.required,
       ],
-      peso: [this.data.edit ? this.data.data?.peso : '', Validators.required],
+      peso: [
+        this.data.edit ? this.data.data?.peso : '',
+        Validators.required,
+        Validators.maxLength(3),
+        Validators.pattern(/^([0-9])*$/),
+      ],
     });
   }
 
@@ -70,9 +81,9 @@ export class AgregarMascotaComponent implements OnInit {
         next: (response) => {
           this.closepopup();
         },
-        error: () => { },
+        error: () => {},
       })
-      .add(() => { });
+      .add(() => {});
   }
 
   editarMascota() {
@@ -89,9 +100,9 @@ export class AgregarMascotaComponent implements OnInit {
         next: (response) => {
           this.closepopup();
         },
-        error: () => { },
+        error: () => {},
       })
-      .add(() => { });
+      .add(() => {});
   }
 
   obtenerDatosForm(): Mascota {
@@ -102,7 +113,7 @@ export class AgregarMascotaComponent implements OnInit {
       edad: Number(edad),
       raza,
       cedula_cliente: cliente,
-      peso: Number(peso)
+      peso: Number(peso),
     };
 
     return mascota;

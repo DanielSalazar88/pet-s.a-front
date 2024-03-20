@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ClienteService } from '../../../services/cliente.service';
 import { Cliente } from '../../../interfaces/cliente.interface';
 import { DialogDataCliente } from '../../../interfaces/dialog-data-cliente.interface';
+import { ErrorService } from '../../../services/errores.service';
 
 @Component({
   selector: 'app-agregar-cliente',
@@ -20,8 +21,9 @@ export class AgregarClienteComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogDataCliente,
     private ref: MatDialogRef<AgregarClienteComponent>,
     private fb: FormBuilder,
-    private clienteService: ClienteService
-  ) { }
+    private clienteService: ClienteService,
+    public readonly errorService: ErrorService
+  ) {}
 
   ngOnInit(): void {
     this.initFormBuilder();
@@ -34,23 +36,28 @@ export class AgregarClienteComponent implements OnInit {
           value: this.data.edit ? this.data.data?.cedula : '',
           disabled: this.data.edit,
         },
-        Validators.required,
+        [Validators.required, Validators.pattern(/^([0-9])*$/)],
       ],
       nombre: [
         this.data.edit ? this.data.data?.nombres : '',
-        [Validators.required, Validators.maxLength(15)],
+        [Validators.required, Validators.maxLength(20)],
       ],
       apellido: [
         this.data.edit ? this.data.data?.apellidos : '',
-        [Validators.required, Validators.maxLength(200)],
+        [Validators.required, Validators.maxLength(30)],
       ],
       telefono: [
         this.data.edit ? this.data.data?.telefono : '',
-        Validators.required,
+        [Validators.required, Validators.pattern(/^([0-9])*$/)],
       ],
       correo: [
         this.data.edit ? this.data.data?.correo : '',
-        Validators.required,
+        [
+          Validators.required,
+          Validators.pattern(
+            "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+          ),
+        ],
       ],
       direccion: [
         this.data.edit ? this.data.data?.direccion : '',
@@ -76,9 +83,9 @@ export class AgregarClienteComponent implements OnInit {
         next: (response) => {
           this.closepopup();
         },
-        error: () => { },
+        error: () => {},
       })
-      .add(() => { });
+      .add(() => {});
   }
 
   editarCliente() {
@@ -94,10 +101,11 @@ export class AgregarClienteComponent implements OnInit {
         next: () => {
           this.closepopup();
         },
-        error: () => { },
+        error: () => {},
       })
-      .add(() => { });
+      .add(() => {});
   }
+
   obtenerDatosForm(): Cliente {
     const { cedula, nombre, apellido, telefono, correo, direccion } =
       this.form.value;
