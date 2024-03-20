@@ -64,7 +64,6 @@ export class AgregarMascotaComponent implements OnInit {
     }
 
     const mascotaNueva: Mascota = this.obtenerDatosForm();
-    console.log(mascotaNueva);
     this.mascotaService
       .guardarMascota(mascotaNueva)
       .subscribe({
@@ -83,7 +82,6 @@ export class AgregarMascotaComponent implements OnInit {
     }
     const mascotaEditada: Mascota = this.obtenerDatosForm();
     mascotaEditada.id_mascota = this.data.data?.id_mascota ?? 0;
-    console.log(mascotaEditada);
 
     this.mascotaService
       .editarMascota(mascotaEditada)

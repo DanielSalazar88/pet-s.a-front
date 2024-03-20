@@ -55,7 +55,6 @@ export class AgregarMedicamentoComponent implements OnInit {
     }
 
     const medicamentoNuevo: Medicamento = this.obtenerDatosForm();
-    console.log(medicamentoNuevo);
     this.medicamentoService
       .guardarMedicamento(medicamentoNuevo)
       .subscribe({
@@ -74,7 +73,6 @@ export class AgregarMedicamentoComponent implements OnInit {
     }
     const medicamentoEditado: Medicamento = this.obtenerDatosForm();
     medicamentoEditado.id = this.data.data?.id ?? 0;
-    console.log(medicamentoEditado);
 
     this.medicamentoService
       .editarMedicamento(medicamentoEditado)

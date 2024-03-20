@@ -25,7 +25,6 @@ export class AgregarRecetaComponent implements OnInit {
 
   ngOnInit(): void {
     this.initFormBuilder();
-    console.log(this.data.mascotas);
   }
 
   private initFormBuilder() {
@@ -52,7 +51,6 @@ export class AgregarRecetaComponent implements OnInit {
     }
 
     const recetaNueva: Receta = this.obtenerDatosForm();
-    console.log(recetaNueva);
     this.recetaService
       .guardarReceta(recetaNueva)
       .subscribe({

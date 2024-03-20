@@ -36,7 +36,6 @@ export class RecetaService {
       id_medicamento: Number(receta.medicamento.id),
       id_mascota: Number(receta.mascota.id_mascota)
     }
-    console.log(data);
     return this.httpClient.post<any>(HttpApi.GUARDAR_RECETA, data).pipe(
       map((res) => {
         this.validarMensajeError(res);
@@ -51,7 +50,6 @@ export class RecetaService {
     const data = {
       id_receta: receta.id
     }
-    console.log(data);
     return this.httpClient.post<any>(HttpApi.ELIMINAR_RECETA, data).pipe(
       map((res) => {
         this.validarMensajeError(res);

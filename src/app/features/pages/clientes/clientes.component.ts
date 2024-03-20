@@ -170,7 +170,6 @@ export class ClientesComponent implements OnInit, AfterViewInit {
         this.informacionClientes.paginator = this.paginator;
       },
       error: (error) => {
-        console.log('ERROR', error);
         this.informacionClientes.data = [];
       },
     });

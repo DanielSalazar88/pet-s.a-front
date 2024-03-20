@@ -45,7 +45,6 @@ export class MascotaService {
   }
 
   editarMascota(mascota: Mascota): Observable<any> {
-    console.log(mascota);
     return this.httpClient.post<any>(HttpApi.EDITAR_MASCOTA, mascota).pipe(
       map((res) => {
         this.validarMensajeError(res);
