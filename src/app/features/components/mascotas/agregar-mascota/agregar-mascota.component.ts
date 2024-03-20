@@ -27,13 +27,15 @@ export class AgregarMascotaComponent implements OnInit {
     public readonly errorService: ErrorService,
     private notificacionService: NotificationService,
     private loadingService: LoadingService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+    console.log(this.data.clientes);
     this.initFormBuilder();
   }
 
   private initFormBuilder() {
+    console.log(this.data.data);
     this.form = this.fb.group({
       nombre: [
         this.data.edit ? this.data.data?.nombre : '',
@@ -57,13 +59,12 @@ export class AgregarMascotaComponent implements OnInit {
             ? this.data.data?.cedula_cliente
             : this.data.data?.cedula_cliente?.cedula
           : '',
-        Validators.required,
       ],
       peso: [
         this.data.edit ? this.data.data?.peso : '',
-        Validators.required,
+        [Validators.required,
         Validators.maxLength(3),
-        Validators.pattern(/^([0-9])*$/),
+        Validators.pattern(/^([0-9])*$/)],
       ],
     });
   }
@@ -79,12 +80,13 @@ export class AgregarMascotaComponent implements OnInit {
     }
 
     const mascotaNueva: Mascota = this.obtenerDatosForm();
-
+    console.log(mascotaNueva);
     this.loadingService.show();
     this.mascotaService
       .guardarMascota(mascotaNueva)
       .subscribe({
         next: () => {
+          console.log("Entra n veces")
           this.notificacionService.openSnackBar(
             'Mascota Agregada Exitosamente ',
             'right',
